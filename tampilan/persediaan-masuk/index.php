@@ -211,14 +211,6 @@ $(document).ready(function() {
    
   });
 
-  $('#star_date').change(function(){
-    dataTable.ajax.reload();
-  });
-    
-  $('#end_date').change(function(){
-    dataTable.ajax.reload();
-  });
-
   //panggil kode
   $('#btnCreated').click(function() { 
 		var kd_persediaan_masuk = $(this).text(); 
