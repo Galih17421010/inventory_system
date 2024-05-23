@@ -38,6 +38,9 @@ session_start();
                         elseif($page == "persediaan-keluar"){
                             include "tampilan/persediaan-keluar/index.php";
                         }
+                        elseif($page == "add-persediaan-keluar"){
+                            include "tampilan/persediaan-keluar/index-insert.php";
+                        }
                         elseif($page == "laporan"){
                             include "tampilan/laporan/index.php";
                         }

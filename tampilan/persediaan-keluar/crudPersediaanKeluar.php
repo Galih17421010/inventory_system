@@ -36,17 +36,24 @@ if ($_GET["action"] === "insertData") {
     $char = "BK";
     $kd_persediaan_keluar = sprintf("%s%03s",$char,$num);
 
-    $kd_supplier = mysqli_real_escape_string($koneksi, $_POST["kd_supplier"]);
-    $kd_bahan = mysqli_real_escape_string($koneksi, $_POST["kd_bahan"]);
     $tanggal = mysqli_real_escape_string($koneksi, $_POST["tanggal"]);
-    $harga = mysqli_real_escape_string($koneksi, $_POST["harga"]);
-    $jumlah = mysqli_real_escape_string($koneksi, $_POST["jumlah"]);
-    $total = $harga * $jumlah ;
-      
-    $sql = "INSERT INTO persediaan_keluar (kd_persediaan_masuk, tanggal, kd_supplier, kd_bahan, harga, jumlah, total, created_at, updated_at) 
-            VALUES ('$kd_PersediaanMasuk','$tanggal','$kd_supplier','$kd_bahan','$harga','$jumlah','$total',NOW(),NOW())";
-    $query= mysqli_query($koneksi,$sql);
-    $lastId = mysqli_insert_id($koneksi);
+    $nama_pelanggan = mysqli_real_escape_string($koneksi, $_POST["nama_pelanggan"]);
+    $alamat = mysqli_real_escape_string($koneksi, $_POST["alamat"]);
+
+    $count = count((array)$_POST['jumlah']);
+
+    for ($i=0; $i < $count; $i++) { 
+        $kd_persediaan_masuk = mysqli_real_escape_string($koneksi, $_POST["bahan"][$i]);
+        $harga = mysqli_real_escape_string($koneksi, $_POST["harga"][$i]);
+        $jumlah = mysqli_real_escape_string($koneksi, $_POST["jumlah"][$i]);
+        $total = mysqli_real_escape_string($koneksi, $_POST["total"][$i]);
+
+        $sql = "INSERT INTO persediaan_keluar (kd_persediaan_keluar, tanggal, nama_pelanggan, alamat, kd_persediaan_masuk, harga, jumlah, total, created_at, updated_at) 
+                VALUES ('$kd_persediaan_keluar','$tanggal','$nama_pelanggan','$alamat','$kd_persediaan_masuk','$harga','$jumlah','$total',NOW(),NOW())";
+        $query= mysqli_query($koneksi,$sql);
+        $lastId = mysqli_insert_id($koneksi);
+    }
+
     if($query == true)
     {
         $data = array(

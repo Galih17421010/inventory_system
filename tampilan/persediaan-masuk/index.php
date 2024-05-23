@@ -65,8 +65,8 @@
                     <select name="kd_bahan" class="form-control" id="kd_bahan">
                         <option disabled selected>-- Pilih Bahan --</option>
                         <?php
-                          $data = mysqli_query($koneksi,"SELECT * FROM bahan");
-                          while($bahan = mysqli_fetch_array($data)){
+                          $datas = mysqli_query($koneksi,"SELECT * FROM bahan");
+                          while($bahan = mysqli_fetch_array($datas)){
                           ?>
                           <option value="<?php echo $bahan['kd_bahan'] ?>"><?php echo $bahan['nama_bahan']; ?></option>
                         <?php } ?>
@@ -77,8 +77,8 @@
                     <select name="kd_supplier" class="form-control" id="kd_supplier">
                         <option disabled selected>-- Pilih Supplier --</option>
                         <?php
-                          $data = mysqli_query($koneksi,"SELECT * FROM suppliers");
-                          while($supplier = mysqli_fetch_array($data)){
+                          $datas = mysqli_query($koneksi,"SELECT * FROM suppliers");
+                          while($supplier = mysqli_fetch_array($datas)){
                           ?>
                           <option value="<?php echo $supplier['kd_supplier'] ?>"><?php echo $supplier['nama_supplier']; ?></option>
                         <?php } ?>
@@ -142,8 +142,8 @@
                     <select name="kd_bahan" class="form-control" id="kd_bahan">
                         <option disabled selected>-- Pilih Bahan --</option>
                         <?php
-                          $data = mysqli_query($koneksi,"SELECT * FROM bahan");
-                          while($bahan = mysqli_fetch_array($data)){
+                          $datas = mysqli_query($koneksi,"SELECT * FROM bahan");
+                          while($bahan = mysqli_fetch_array($datas)){
                           ?>
                           <option value="<?php echo $bahan['kd_bahan'] ?>"><?php echo $bahan['nama_bahan']; ?></option>
                         <?php } ?>
@@ -154,8 +154,8 @@
                     <select name="kd_supplier" class="form-control" id="kd_supplier">
                         <option disabled selected>-- Pilih Supplier --</option>
                         <?php
-                          $data = mysqli_query($koneksi,"SELECT * FROM suppliers");
-                          while($supplier = mysqli_fetch_array($data)){
+                          $datas = mysqli_query($koneksi,"SELECT * FROM suppliers");
+                          while($supplier = mysqli_fetch_array($datas)){
                           ?>
                           <option value="<?php echo $supplier['kd_supplier'] ?>"><?php echo $supplier['nama_supplier']; ?></option>
                         <?php } ?>
