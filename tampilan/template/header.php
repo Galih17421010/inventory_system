@@ -27,6 +27,7 @@ if (!isset($_SESSION['log'])) {
   <link rel="stylesheet" href="asset/plugins/sweetalert2/sweetalert2.min.css">
   <!-- Datatables bs5 CSS  -->
   <link rel="stylesheet" href="asset/plugins/datatables-bs5/css/datatables.min.css">
+ 
 
   <!-- jQuery -->
   <script src="asset/plugins/jquery/jquery.min.js"></script>
