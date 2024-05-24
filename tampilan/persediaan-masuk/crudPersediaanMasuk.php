@@ -42,9 +42,10 @@ if ($_GET["action"] === "fetchData") {
         $sub_array[] = 'Rp '.number_format($row['harga'],0,',','.');
         $sub_array[] = $row['jumlah'];
         $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
-        $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["id"].'" class="btn btn-success btn-sm editBtn"><i class="fa fa-edit"></i> Edit</button>  
-                        <button type="button" value="'.$row["id"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>';
-        $sub_array[] = '<a href="tampilan/persediaan-masuk/print.php?id='.$row["id"].'" class="btn btn-primary btn-sm printBtn" target="blank"><i class="fa fa-print"> Print</i></a>';
+        $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["id"].'" class="btn btn-success btn-sm editBtn" data-keyboard="false" data-backdrop="static">
+                            <i class="fa fa-edit"></i> Edit</button>  
+                        <button type="button" value="'.$row["id"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>
+                        <a href="tampilan/persediaan-masuk/print.php?id='.$row["id"].'" class="btn btn-primary btn-sm printBtn" target="blank"><i class="fa fa-print"> Print</i></a>';
                         
         $data[] = $sub_array;
     }

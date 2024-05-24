@@ -1,5 +1,8 @@
 <?php 
 require_once '../../config/koneksi.php'; 
+require_once '../../asset/dompdf/autoload.inc.php';
+
+use Dompdf\Dompdf;
 
 if ($_GET["action"] === "fetchKode") {
     $qryIdBahanKeluar = $koneksi->query("SELECT MAX(kd_persediaan_keluar) from persediaan_keluar");
@@ -65,6 +68,91 @@ if ($_GET["action"] === "insertData") {
     {
          $data = array(
             'status'=>'false',
+        );
+        echo json_encode($data);
+    } 
+}
+
+
+// function Untuk Tabel data
+if ($_GET["action"] === "fetchData") {
+    $output= array();
+
+    $sql = "SELECT id, kd_persediaan_keluar, tanggal, nama_pelanggan, alamat, SUM(jumlah) as jumlah, SUM(total) as total FROM `persediaan_keluar` GROUP BY kd_persediaan_keluar";
+
+    $totalQuery = mysqli_query($koneksi,$sql);
+    $total_all_rows = mysqli_num_rows($totalQuery);
+    
+    $query = mysqli_query($koneksi,$sql);
+    $count_rows = mysqli_num_rows($query);
+    $data = array();
+    
+    while($row = mysqli_fetch_assoc($query))
+    {
+        
+
+        $sub_array = array();   
+        $sub_array[] = $row['kd_persediaan_keluar'];
+        $sub_array[] = $row['nama_pelanggan'];
+        $sub_array[] = $row['alamat'];
+        $sub_array[] = $row['jumlah'];
+        $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
+        $sub_array[] = date('d/m/Y', strtotime($row['tanggal']));
+        $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["kd_persediaan_keluar"].'" class="btn btn-success btn-sm editBtn" data-keyboard="false" data-backdrop="static">
+                            <i class="fa fa-edit"></i> Edit</button>
+                        <button type="button" value="'.$row["kd_persediaan_keluar"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>
+                        <a type="button" href="tampilan/persediaan-keluar/print.php?id='.$row["kd_persediaan_keluar"].'" class="btn btn-primary btn-sm printBtn" target="blank">
+                        <i class="fa fa-print"></i> Print</a>';
+        // $sub_array[] = '<a href="tampilan/persediaan-keluar/print.php?id='.$row["id"].'" class="btn btn-primary btn-sm printBtn" target="blank"><i class="fa fa-print"> Print</i></a>';
+                        
+        $data[] = $sub_array;
+    }
+    $output = array(
+        'recordsTotal' =>$count_rows ,
+        'recordsFiltered'=>   $total_all_rows,
+        'data'=>$data,
+    );
+    echo  json_encode($output);
+}
+
+// Edit data
+if ($_GET["action"] === "fetchSingle") {
+    $kd_persediaan_keluar = $_POST["kd_persediaan_keluar"];
+    $sql = "SELECT * FROM persediaan_keluar WHERE kd_persediaan_keluar = $kd_persediaan_keluar ORDER BY `id` ASC";
+    $result = mysqli_query($koneksi, $sql);
+    if (mysqli_num_rows($result) > 0) {
+      $data = mysqli_fetch_assoc($result);
+      echo json_encode([
+        "statusCode" => 200,
+        "data" => $data
+      ]);
+    } else {
+      echo json_encode([
+        "statusCode" => 404,
+        "message" => "No user found with this id"
+      ]);
+    }
+    mysqli_close($koneksi);
+}
+
+
+// function to delete data
+if ($_GET["action"] === "deleteData") {
+    $kd_persediaan_keluar = $_POST["kd_persediaan_keluar"];
+  
+    $sql = "DELETE FROM persediaan_keluar WHERE kd_persediaan_keluar = '$kd_persediaan_keluar'";
+    $delete =mysqli_query($koneksi,$sql);
+    if($delete==true)
+    {
+        $data = array(
+            'status'=>'success',
+        );
+        echo json_encode($data);
+    }
+    else
+    {
+        $data = array(
+            'status'=>'failed',
         );
         echo json_encode($data);
     } 

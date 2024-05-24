@@ -8,36 +8,41 @@
   </div><!-- /.container-fluid -->
 </section>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">List of Supplier</h3>
-              <div class="fa-pull-right">
-                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
-                    <span class="fas fa-plus"></span>  Create New
-                </button>
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="tableMaster" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Kode Supplier</th>
-                  <th>Nama Lengkap</th>
-                  <th>Nomor Telepon</th>
-                  <th>Alamat</th>
-                  <th>Foto</th>
-                  <th>Tanggal</th>
-                  <th>Action</th>
-                </tr>
-                </thead>
-              </table>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">List of Supplier</h3>
+                <div class="fa-pull-right">
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
+                        <span class="fas fa-plus"></span>  Create New
+                    </button>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                <table id="tableMaster" class="table table-bordered">
+                    <thead>
+                    <tr>
+                    <th>Kode Supplier</th>
+                    <th>Nama Lengkap</th>
+                    <th>Nomor Telepon</th>
+                    <th>Alamat</th>
+                    <th>Foto</th>
+                    <th>Tanggal</th>
+                    <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
+  </div><!-- /.container-fluid -->
+</section>
+
 
 <!-- Form Tambah Data -->
 <div class="modal fade" id="addModal">
@@ -213,7 +218,7 @@ $(document).ready(function() {
                 '<button type="button" value="' + value.id + '" data-toggle="modal" data-target="#detailModal" class="btn detailBtn">'+
                 '<img src="gambar/supplier/' + value.foto + '" style="width:50px;height:50px;border:1px solid gray;border-radius:8px;object-fit:cover"></button>',
                 value.created_at,
-                '<button type="button" value="' + value.id + '" data-toggle="modal" data-target="#editModal" class="btn btn-sm btn-success editBtn"><i class="fa fa-edit"></i></button>'+
+                '<button type="button" value="' + value.id + '" data-toggle="modal" data-target="#editModal" class="btn btn-sm btn-success editBtn" data-keyboard="false" data-backdrop="static"><i class="fa fa-edit"></i></button>'+
                 '<button type="button" class="btn btn btn-sm btn-danger deleteBtn" value="' + value.id + '"><i class="fa fa-trash"></i></button>' +
                 '<input type="hidden" class="delete_image" value="' + value.foto + '">'
             ]).draw(false);

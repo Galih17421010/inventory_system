@@ -114,7 +114,7 @@
               <!-- /.card-header -->
 
               <div class="card-body">
-                <table id="tableMaster" class="table table-striped">
+                <table id="tableMaster" class="table table-bordered">
                   <thead>
                   <tr>
                     <th>No</th>

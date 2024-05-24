@@ -8,39 +8,43 @@
   </div>
 </section>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Data Masuk Barang Transaksi</h3>
-                <div class="fa-pull-right">
-                  <button type="button" class="btn btn-outline-primary" id="btnCreated" data-toggle="modal" data-target="#addModal">
-                      <span class="fas fa-plus"></span>  Create New
-                  </button>
-                </div>
-            </div>
-            <div class="card-body">
-              <br>
-                <table id="tableMaster" class="table table-bordered table-responsive-sm">
-                  <thead>
-                  <tr>
-                    <th>Kode</th>
-                    <th>Tanggal</th>
-                    <th>Nama Supplier</th>
-                    <th>Nama Bahan</th>
-                    <th>Harga</th>
-                    <th>Jumlah</th>
-                    <th>Total Harga</th>
-                    <th>Action</th>
-                    <th>Cetak Dokument</th>
-                  </tr>
-                  </thead>
-                </table>
-            </div>
-
-        </div>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+          <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Data Masuk Barang Transaksi</h3>
+                  <div class="fa-pull-right">
+                    <button type="button" class="btn btn-outline-primary" id="btnCreated" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
+                        <span class="fas fa-plus"></span>  Create New
+                    </button>
+                  </div>
+              </div>
+              <div class="card-body">
+                <br>
+                  <table id="tableMaster" class="table table-bordered" style="overflow-x:auto;width:100%">
+                    <thead>
+                    <tr>
+                      <th>Kode</th>
+                      <th>Tanggal</th>
+                      <th>Nama Supplier</th>
+                      <th>Nama Bahan</th>
+                      <th>Harga</th>
+                      <th>Jumlah</th>
+                      <th>Total Harga</th>
+                      <th>Action</th>
+                    </tr>
+                    </thead>
+                  </table>
+              </div>
+          </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>
+
+
 
 <!-- Form Tambah Data -->
 <div class="modal fade" id="addModal">

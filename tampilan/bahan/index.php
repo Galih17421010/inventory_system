@@ -8,36 +8,41 @@
   </div><!-- /.container-fluid -->
 </section>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+          <div class="card">
               <div class="card-header">
-              <h3 class="card-title">List of Bahan</h3>
+                <h3 class="card-title">List of Bahan</h3>
                 <div class="fa-pull-right">
-                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
+                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
                       <span class="fas fa-plus"></span>  Create New
                   </button>
                 </div>
               </div>
               <!-- /.card-header -->
-
               <div class="card-body">
-                <table id="tableMaster" class="table table-bordered">
+                <table id="tableMaster" class="table table-bordered table-striped" style="overflow-x:auto;width:100%">
                   <thead>
                   <tr>
                     <th>No</th>
                     <th>Kode Bahan</th>
                     <th>Nama Bahan</th>
                     <th>Gambar</th>
-                    <th>Satuan</th>
+                    <th>Stok</th>
                     <th>Action</th>
                   </tr>
                   </thead>
                 </table>
-               </div>
+              </div>
+          </div>
         </div>
     </div>
-</div>
+  </div><!-- /.container-fluid -->
+</section>
+
+
 
 <!-- Form Tambah Data -->
 <div class="modal fade" id="addModal">
@@ -60,16 +65,7 @@
                     <input type="text" class="form-control" name="nama_bahan" placeholder="Nama Bahan..." required>
                 </div>
                 <div class="form-group">
-                <label>Pilih Satuan</label>
-                <select class="form-control" id="addSatuan" name="satuan" required>
-                  <option>-- Select a satuan --</option>
-                  <option value="PCS">PCS</option>
-                  <option value="DUS">DUS</option>
-                  <option value="PAK">PAK</option>
-                  <option value="BALL">BALL</option>
-                  <option value="LUSIN">LUSIN</option>
-                  <option value="KODI">KODI</option>
-                </select>
+                
                 </div>   
                 <div class="form-group">
                     <label>Foto Bahan</label>
@@ -114,16 +110,7 @@
                     <input type="text" class="form-control" name="nama_bahan" placeholder="Nama Bahan..." required>
                 </div>
                 <div class="form-group">
-                <label>Pilih Satuan</label>
-                <select class="form-control" id="addSatuan" name="satuan">
-                  <option>-- Select a satuan --</option>
-                  <option value="PCS">PCS</option>
-                  <option value="DUS">DUS</option>
-                  <option value="PAK">PAK</option>
-                  <option value="BALL">BALL</option>
-                  <option value="LUSIN">LUSIN</option>
-                  <option value="KODI">KODI</option>
-                </select>
+               
                 </div>   
                 <div class="form-group">
                     <label>Foto Bahan</label>
@@ -151,6 +138,7 @@ $(document).ready(function() {
   // Tabel Data
   let dataTable = $('#tableMaster').DataTable({
     processing: true,
+    autoWidth: true,
     ajax: {
         url:'tampilan/bahan/crudBahan.php?action=fetchData',
         type: 'POST',
@@ -208,7 +196,6 @@ $(document).ready(function() {
             $("#editBahan #id").val(data.id);
             $("#editBahan input[name='kd_bahan']").val(data.kd_bahan);
             $("#editBahan input[name='nama_bahan']").val(data.nama_bahan);
-            $("#editBahan #addSatuan").val(data.satuan);
             $("#editBahan .preview_foto").attr("src", "gambar/produk/" + data.foto + "");
             $("#editBahan #foto_lama").val(data.foto);
             // menampilkan modal edit

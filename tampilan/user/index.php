@@ -1,44 +1,48 @@
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1>Data User</h1>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1>Data User</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content-header">
+  <div class="container-fluid">
+   <div class="row">
+      <div class="col-12">
+          <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">List of Users</h3>
+                  <div class="fa-pull-right">
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
+                        <span class="fas fa-plus"></span>  Create New
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+
+                <div class="card-body">
+                  <table id="tableMaster" class="table table-bordered" style="overflow-x:auto;width:100%">
+                    <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th>Avatar</th>
+                      <th>Status</th>
+                      <th>Tanggal</th>
+                      <th>Action</th>
+                    </tr>
+                    </thead>
+                  </table>
+                </div>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-              <div class="card-header">
-              <h3 class="card-title">List of Users</h3>
-                <div class="fa-pull-right">
-                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal">
-                      <span class="fas fa-plus"></span>  Create New
-                  </button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-
-              <div class="card-body">
-                <table id="tableMaster" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Avatar</th>
-                    <th>Status</th>
-                    <th>Tanggal</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                </table>
-               </div>
-        </div>
     </div>
-</div>
+  </div><!-- /.container-fluid -->
+</section>
 
 <!-- Form Tambah Data -->
 <div class="modal fade" id="addModal">
