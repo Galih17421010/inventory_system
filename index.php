@@ -20,7 +20,8 @@ session_start();
             <div class="content-wrapper">
                 <div class="content">
                     <div class="container-fluid">
-                    <?php $page = isset($_GET['page']) ? $_GET['page'] : 'index'; ?>
+                    <?php   
+                            $page = isset($_GET['page']) ? $_GET['page'] : 'index'; ?>
                     <?php      
                        
                         if($page == "index"){
@@ -40,6 +41,9 @@ session_start();
                         }
                         elseif($page == "add-persediaan-keluar"){
                             include "tampilan/persediaan-keluar/index-insert.php";
+                        }
+                        elseif($page == "edit-persediaan-keluar"){
+                            include "tampilan/persediaan-keluar/index-edit.php";
                         }
                         elseif($page == "laporan"){
                             include "tampilan/laporan/index.php";

@@ -98,12 +98,10 @@ if ($_GET["action"] === "fetchData") {
         $sub_array[] = $row['jumlah'];
         $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
         $sub_array[] = date('d/m/Y', strtotime($row['tanggal']));
-        $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["kd_persediaan_keluar"].'" class="btn btn-success btn-sm editBtn" data-keyboard="false" data-backdrop="static">
-                            <i class="fa fa-edit"></i> Edit</button>
+        $sub_array[] = '<a type="button" href="?page=edit-persediaan-keluar&id='.$row["kd_persediaan_keluar"].'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Edit</a>
                         <button type="button" value="'.$row["kd_persediaan_keluar"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>
                         <a type="button" href="tampilan/persediaan-keluar/print.php?id='.$row["kd_persediaan_keluar"].'" class="btn btn-primary btn-sm printBtn" target="blank">
                         <i class="fa fa-print"></i> Print</a>';
-        // $sub_array[] = '<a href="tampilan/persediaan-keluar/print.php?id='.$row["id"].'" class="btn btn-primary btn-sm printBtn" target="blank"><i class="fa fa-print"> Print</i></a>';
                         
         $data[] = $sub_array;
     }
@@ -117,9 +115,11 @@ if ($_GET["action"] === "fetchData") {
 
 // Edit data
 if ($_GET["action"] === "fetchSingle") {
+    
     $kd_persediaan_keluar = $_POST["kd_persediaan_keluar"];
-    $sql = "SELECT * FROM persediaan_keluar WHERE kd_persediaan_keluar = $kd_persediaan_keluar ORDER BY `id` ASC";
+    $sql = "SELECT * FROM persediaan_keluar WHERE kd_persediaan_keluar = '$kd_persediaan_keluar'";
     $result = mysqli_query($koneksi, $sql);
+    
     if (mysqli_num_rows($result) > 0) {
       $data = mysqli_fetch_assoc($result);
       echo json_encode([
