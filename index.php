@@ -36,6 +36,15 @@ session_start();
                         elseif($page == "persediaan-masuk"){
                             include "tampilan/persediaan-masuk/index.php";
                         }
+                        elseif($page == "add-persediaan-masuk"){
+                            include "tampilan/persediaan-masuk/index-create.php";
+                        }
+                        elseif($page == "edit-persediaan-masuk"){
+                            include "tampilan/persediaan-masuk/index-edit.php";
+                        }
+                        elseif($page == "detail-persediaan-masuk"){
+                            include "tampilan/persediaan-masuk/index-detail.php";
+                        }
                         elseif($page == "persediaan-keluar"){
                             include "tampilan/persediaan-keluar/index.php";
                         }

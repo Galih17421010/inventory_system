@@ -11,16 +11,19 @@ if ($_GET["action"] === "fetchData") {
     $query = mysqli_query($koneksi,$sql);
     $count_rows = mysqli_num_rows($query);
     $data = array();
-    $no = 1;
     
     while($row = mysqli_fetch_assoc($query))
     {
+        if ($row['stok'] == 0) {
+          $stok = '<span class="badge badge-info">Belum Tersedia</span>';
+        }else{
+          $stok = $row['stok'];
+        }
         $sub_array = array();   
-        $sub_array[] = $no++;
         $sub_array[] = $row['kd_bahan'];
         $sub_array[] = $row['nama_bahan'];
         $sub_array[] = '<img src="gambar/produk/'.$row["foto"].'" style="width:50px;height:50px;border:1px solid gray;border-radius:8px;object-fit:cover"></button>';
-        $sub_array[] = $row['stok'];
+        $sub_array[] = $stok;
         $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["id"].'" class="btn btn-success btn-sm editBtn" data-keyboard="false" data-backdrop="static"><i class="fa fa-edit"></i> Edit</button>  
                         <button type="button" value="'.$row["id"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>
                         <input type="hidden" class="delete_image" value="' .$row["foto"].'">';
@@ -46,7 +49,6 @@ if ($_GET["action"] === "insertData") {
       $kd_bahan = sprintf("%s%03s",$char,$num);
 
       $nama_bahan = mysqli_real_escape_string($koneksi, $_POST["nama_bahan"]);
-      $satuan = mysqli_real_escape_string($koneksi, $_POST["satuan"]);
   
       // Simpan gambar kedalam folder
       $path = "../../gambar/produk/";
@@ -54,8 +56,8 @@ if ($_GET["action"] === "insertData") {
       $foto = uniqid() . time() . "." . pathinfo($original_name, PATHINFO_EXTENSION);
       move_uploaded_file($_FILES["foto"]["tmp_name"], $path . $foto);
         
-      $sql = "INSERT INTO bahan (kd_bahan, nama_bahan, foto, satuan, created_at, updated_at) 
-              VALUES ('$kd_bahan','$nama_bahan','$foto','$satuan',NOW(),NOW())";
+      $sql = "INSERT INTO bahan (kd_bahan, nama_bahan, foto, created_at, updated_at) 
+              VALUES ('$kd_bahan','$nama_bahan','$foto',NOW(),NOW())";
       $query= mysqli_query($koneksi,$sql);
       $lastId = mysqli_insert_id($koneksi);
       if($query == true)

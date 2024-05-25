@@ -23,11 +23,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="tableMaster" class="table table-bordered table-striped" style="overflow-x:auto;width:100%">
+                <table id="tableMaster" class="table table-bordered" style="overflow-x:auto;width:100%">
                   <thead>
                   <tr>
-                    <th>No</th>
-                    <th>Kode Bahan</th>
+                    <th>Kode</th>
                     <th>Nama Bahan</th>
                     <th>Gambar</th>
                     <th>Stok</th>
@@ -139,6 +138,7 @@ $(document).ready(function() {
   let dataTable = $('#tableMaster').DataTable({
     processing: true,
     autoWidth: true,
+    order: [[ 1, "desc" ]],
     ajax: {
         url:'tampilan/bahan/crudBahan.php?action=fetchData',
         type: 'POST',

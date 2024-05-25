@@ -16,9 +16,7 @@
               <div class="card-header">
                 <h3 class="card-title">Data Masuk Barang Transaksi</h3>
                   <div class="fa-pull-right">
-                    <button type="button" class="btn btn-outline-primary" id="btnCreated" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
-                        <span class="fas fa-plus"></span>  Create New
-                    </button>
+                    <a href="?page=add-persediaan-masuk" class="btn btn-outline-primary"><i class="fas fa-plus"></i>Create New</a>
                   </div>
               </div>
               <div class="card-body">
@@ -29,10 +27,8 @@
                       <th>Kode</th>
                       <th>Tanggal</th>
                       <th>Nama Supplier</th>
-                      <th>Nama Bahan</th>
-                      <th>Harga</th>
                       <th>Jumlah</th>
-                      <th>Total Harga</th>
+                      <th>Total Beli</th>
                       <th>Action</th>
                     </tr>
                     </thead>
@@ -46,159 +42,6 @@
 
 
 
-<!-- Form Tambah Data -->
-<div class="modal fade" id="addModal">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Create Bahan Masuk <span id="kd_persediaan_masuk"></span></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form id="addbahanMasuk" method="post">
-        <div class="modal-body">
-          <div class="row">
-          <div class="col-md-6">
-                <div class="form-group">
-                    <label>Tanggal Masuk</label>
-                    <input type="date" class="form-control" name="tanggal" value="<?= date("Y-m-d") ?>" required>
-                </div>
-                <div class="form-group">
-                    <label>Bahan</label>
-                    <select name="kd_bahan" class="form-control" id="kd_bahan">
-                        <option disabled selected>-- Pilih Bahan --</option>
-                        <?php
-                          $datas = mysqli_query($koneksi,"SELECT * FROM bahan");
-                          while($bahan = mysqli_fetch_array($datas)){
-                          ?>
-                          <option value="<?php echo $bahan['kd_bahan'] ?>"><?php echo $bahan['nama_bahan']; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Supplier</label>
-                    <select name="kd_supplier" class="form-control" id="kd_supplier">
-                        <option disabled selected>-- Pilih Supplier --</option>
-                        <?php
-                          $datas = mysqli_query($koneksi,"SELECT * FROM suppliers");
-                          while($supplier = mysqli_fetch_array($datas)){
-                          ?>
-                          <option value="<?php echo $supplier['kd_supplier'] ?>"><?php echo $supplier['nama_supplier']; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-          </div>
-          <!-- Pembagi form -->
-          <div class="col-md-6">
-                <div class="form-group">
-                    <label>Harga Bahan</label>
-                    <input type="number" class="form-control" id="harga" name="harga" required>
-                </div>
-                <div class="form-group">
-                    <label>Jumlah Bahan</label>
-                    <input type="number" class="form-control" id="jumlah" name="jumlah" required>
-                </div>
-                <div class="form-group">
-                    <label>Total Harga</label>
-                    <div class="input-group">
-                    <div class="input-group-append">
-                      <div class="input-group-text">
-                        <span>Rp</span>
-                      </div>
-                    </div>
-                    <input type="number" class="form-control" id="total" name="total" disabled>
-                    </div>
-                </div>
-          </div>
-        </div>
-        </div>
-        <div class="modal-footer justify-content-center">
-          <button type="submit" name="" class="btn btn-primary">Save changes</button>              
-        </div>
-        </form> 
-      </div>
-    </div>
-</div>
-
-
-<!-- Form Edit Data -->
-<div class="modal fade" id="editModal">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <form id="editbahanMasuk" method="post">
-        <input type="hidden" name="id" id="id">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Bahan Masuk <span id="kd_persediaan_masuk"></span></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-          <div class="col-md-6">
-                <div class="form-group">
-                    <label>Tanggal Masuk</label>
-                    <input type="date" class="form-control" name="tanggal" value="" required>
-                </div>
-                <div class="form-group">
-                    <label>Bahan</label>
-                    <select name="kd_bahan" class="form-control" id="kd_bahan">
-                        <option disabled selected>-- Pilih Bahan --</option>
-                        <?php
-                          $datas = mysqli_query($koneksi,"SELECT * FROM bahan");
-                          while($bahan = mysqli_fetch_array($datas)){
-                          ?>
-                          <option value="<?php echo $bahan['kd_bahan'] ?>"><?php echo $bahan['nama_bahan']; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Supplier</label>
-                    <select name="kd_supplier" class="form-control" id="kd_supplier">
-                        <option disabled selected>-- Pilih Supplier --</option>
-                        <?php
-                          $datas = mysqli_query($koneksi,"SELECT * FROM suppliers");
-                          while($supplier = mysqli_fetch_array($datas)){
-                          ?>
-                          <option value="<?php echo $supplier['kd_supplier'] ?>"><?php echo $supplier['nama_supplier']; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-          </div>
-          <!-- Pembagi form -->
-          <div class="col-md-6">
-                <div class="form-group">
-                    <label>Harga Bahan</label>
-                    <input type="number" class="form-control" id="harga" name="harga" required>
-                </div>
-                <div class="form-group">
-                    <label>Jumlah Bahan</label>
-                    <input type="number" class="form-control" id="jumlah" name="jumlah" required>
-                </div>
-                <div class="form-group">
-                    <label>Total Harga</label>
-                    <div class="input-group">
-                    <div class="input-group-append">
-                      <div class="input-group-text">
-                        <span>Rp</span>
-                      </div>
-                    </div>
-                    <input type="number" class="form-control" id="total" name="total" disabled>
-                    </div>
-                </div>
-          </div>
-        </div>
-        </div>
-        <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" id="updateBtn" class="btn btn-primary">Update Data</button>     
-        </div>
-        </form> 
-      </div>
-    </div>
-</div>
-
 
 
 
@@ -207,6 +50,7 @@ $(document).ready(function() {
     // Tabel Data
     let dataTable = $('#tableMaster').DataTable({
     processing: true,
+    order: [[ 1, "desc" ]],
     ajax: {
         url:'tampilan/persediaan-masuk/crudPersediaanMasuk.php?action=fetchData',
         type: 'POST',
