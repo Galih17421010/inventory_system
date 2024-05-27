@@ -14,7 +14,7 @@ tr {
 }
 </style>
 
-    <title>Print <?= $data['kd_persediaan_keluar']?></title>
+    <title>Print <?= $data['transaksi_keluar']?></title>
 </head>
 <body>
     <center>CV TIA RISWAN</center>
@@ -27,7 +27,8 @@ tr {
                 <tr>
                     <th>Kode Bahan</th>
                     <th>Nama Pelanggan</th>
-                    <th>Nama Bahan</th>
+                    <th>Alamat</th>
+                    <th>Bahan</th>
                     <th>Harga</th>
                     <th>Jumlah</th>
                     <th>Total Harga</th>
@@ -35,16 +36,18 @@ tr {
             </thead>
             <tbody>
                 <?php 
-                require_once '../../config/koneksi.php'; 
-                    $kd_persediaan_keluar = $_GET["id"];
-                    $sql = "SELECT * FROM persediaan_keluar  WHERE kd_persediaan_keluar = '$kd_persediaan_keluar'";
+                require_once '../../../config/koneksi.php'; 
+                    $transaksi_keluar = $_GET["id"];
+                    $sql = "SELECT kd_persediaan_keluar, nama_pelanggan, alamat, bahan.nama_bahan as nama_bahan, jumlah, total, persediaan_keluar.harga 
+                            FROM persediaan_keluar JOIN bahan ON persediaan_keluar.kd_bahan = bahan.kd_bahan WHERE transaksi_keluar = '$transaksi_keluar' ORDER BY kd_persediaan_keluar";
                     $result = mysqli_query($koneksi, $sql);
                     
                 while($datas = mysqli_fetch_array($result)){?>    
                     <tr>
-                        <td><?= $datas['kd_persediaan_masuk']?></td>
+                        <td><?= $datas['kd_persediaan_keluar']?></td>
                         <td><?= $datas['nama_pelanggan']?></td>
                         <td><?= $datas['alamat']?></td>
+                        <td><?= $datas['nama_bahan']?></td>
                         <td>Rp <?= number_format($datas['harga'],0,",",".") ?></td>
                         <td><?= $datas['jumlah']?></td>
                         <td> Rp <?= number_format($datas['total'],0,",",".") ?></td>
@@ -53,7 +56,7 @@ tr {
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4"><center><b>Total</b></center></td>
+                    <td colspan="5"><center><b>Total</b></center></td>
                     <td><b><?= $data['totaljumlah'] ?></b></td>
                     <td><b>Rp <?= number_format($data['totalbeli'],0,",",".") ?></b></td>
                 </tr>

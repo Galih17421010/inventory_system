@@ -42,15 +42,12 @@
 
 
 
-
-
-
 <script type="text/javascript">
 $(document).ready(function() {
     // Tabel Data
     let dataTable = $('#tableMaster').DataTable({
     processing: true,
-    order: [[ 1, "desc" ]],
+    order: [[ 0, "desc" ]],
     ajax: {
         url:'tampilan/persediaan-masuk/crudPersediaanMasuk.php?action=fetchData',
         type: 'POST',
@@ -113,70 +110,6 @@ $(document).ready(function() {
               }
         });
   });
-
-  // Edit Data
-  $("#tableMaster").on("click", ".editBtn", function() {
-        var id = $(this).val();
-        var kd_persediaan_masuk = $(this).text(); 
-        $.ajax({
-        url: "tampilan/persediaan-masuk/crudPersediaanMasuk.php?action=fetchSingle",
-        type: "POST",
-        dataType: "json",
-        data: {
-            id: id, kd_persediaan_masuk : kd_persediaan_masuk
-        },
-        success: function(response) {
-            var data = response.data;
-            $("#editbahanMasuk #id").val(data.id);
-            $('#editbahanMasuk #kd_persediaan_masuk').text(data.kd_persediaan_masuk); 
-            $("#editbahanMasuk input[name='tanggal']").val(data.tanggal);
-            $("#editbahanMasuk #kd_supplier").val(data.kd_supplier);
-            $("#editbahanMasuk #kd_bahan").val(data.kd_bahan);
-            $("#editbahanMasuk #harga").val(data.harga);
-            $("#editbahanMasuk #jumlah").val(data.jumlah);
-            $("#editbahanMasuk #total").val(data.total);
-            // menampilkan modal edit
-            $('#editModal').modal('hide');
-        }
-        });
-  });
-
-  // Update data kedalam database
-  $("#editbahanMasuk").on("submit", function(e) {
-        e.preventDefault();
-        $.ajax({
-        url: "tampilan/persediaan-masuk/crudPersediaanMasuk.php?action=updateData",
-        type: "POST",
-        data: new FormData(this),
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function(data) {
-            var json = JSON.parse(data);
-            var status = json.status;
-            if (status == 'true') {
-                $('#editbahanMasuk')[0].reset();
-                $('#editModal').modal('hide');
-                Swal.fire({
-                    title: "Sukses!",
-                    text: "Berhasil Merubah Data Bahan Persediaan",
-                    icon: "success"
-                });
-                dataTable.ajax.reload();
-            }else{
-                $('#editbahanMasuk')[0].reset();
-                $('#editModal').modal('hide');
-                Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong!",
-                });
-                dataTable.ajax.reload();
-            } 
-        }
-        });
-    });
-
 
   // function to delete data
   $("#tableMaster").on("click", ".deleteBtn", function() {

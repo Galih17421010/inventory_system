@@ -5,7 +5,7 @@
         <h1>Data Bahan Persediaan</h1>
       </div>
     </div>
-  </div><!-- /.container-fluid -->
+  </div>
 </section>
 
 <section class="content-header">
@@ -16,20 +16,19 @@
               <div class="card-header">
                 <h3 class="card-title">List of Bahan</h3>
                 <div class="fa-pull-right">
-                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
+                  <button type="button" class="btn btn-outline-primary" id="btnCreated" data-toggle="modal" data-target="#addModal" data-keyboard="false" data-backdrop="static">
                       <span class="fas fa-plus"></span>  Create New
                   </button>
                 </div>
               </div>
-              <!-- /.card-header -->
               <div class="card-body">
                 <table id="tableMaster" class="table table-bordered" style="overflow-x:auto;width:100%">
                   <thead>
                   <tr>
                     <th>Kode</th>
                     <th>Nama Bahan</th>
-                    <th>Gambar</th>
                     <th>Stok</th>
+                    <th>Harga</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -38,7 +37,7 @@
           </div>
         </div>
     </div>
-  </div><!-- /.container-fluid -->
+  </div>
 </section>
 
 
@@ -55,25 +54,19 @@
         </div>
         <form id="addBahan" method="POST">
         <div class="modal-body">
-                <!-- <div class="form-group"> -->
-                <!-- <label>Kode Supplier</label>
-                    <input type="text" class="form-control" name="kd_supplier" placeholder="Test" disabled>
-                </div> -->
+                <div class="form-group">
+                <label>Kode Bahan</label>
+                    <input type="text" class="form-control" id="kd_bahan" name="kd_bahan" disabled>
+                </div>
                 <div class="form-group">
                 <label>Nama Bahan</label>
                     <input type="text" class="form-control" name="nama_bahan" placeholder="Nama Bahan..." required>
                 </div>
                 <div class="form-group">
-                
-                </div>   
-                <div class="form-group">
-                    <label>Foto Bahan</label>
-                    <div class="input-group">
-                        <div class="custom-file">
-                            <input type="file" class="form-control foto" name="foto" required>
-                        </div>
-                    </div>
+                <label>Harga Bahan</label>
+                    <input type="number" class="form-control" name="harga" placeholder="Hanya berupa angka..." required>
                 </div>
+                
         </div>
             <div class="modal-footer justify-content-center">
               <button type="submit" id="insertBtn" class="btn btn-primary">Save changes</button>              
@@ -96,10 +89,6 @@
         <form id="editBahan" method="POST">
         <input type="hidden" name="id" id="id">
         <div class="modal-body">
-                    <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle preview_foto" name="preview_foto"
-                        src="">
-                    </div>
                 <div class="form-group">
                 <label>Kode Bahan</label>
                     <input type="text" class="form-control" name="kd_bahan" disabled>
@@ -109,16 +98,8 @@
                     <input type="text" class="form-control" name="nama_bahan" placeholder="Nama Bahan..." required>
                 </div>
                 <div class="form-group">
-               
-                </div>   
-                <div class="form-group">
-                    <label>Foto Bahan</label>
-                    <div class="input-group">
-                        <div class="custom-file">
-                            <input type="file" class="form-control foto" name="foto">
-                            <input type="hidden" class="form-control" name="foto_lama" id="foto_lama">
-                        </div>
-                    </div>
+                <label>Harga Bahan</label>
+                    <input type="number" class="form-control" name="harga" placeholder="Hanya berupa angka..." required>
                 </div>
         </div>
             <div class="modal-footer justify-content-center">
@@ -138,12 +119,25 @@ $(document).ready(function() {
   let dataTable = $('#tableMaster').DataTable({
     processing: true,
     autoWidth: true,
-    order: [[ 1, "desc" ]],
+    order: [[ 0, "desc" ]],
     ajax: {
         url:'tampilan/bahan/crudBahan.php?action=fetchData',
         type: 'POST',
       }
   });
+
+  //panggil kode
+  $('#btnCreated').click(function() { 
+		var kd_bahan = $(this).val(); 
+		$.ajax({
+			type: 'POST', 
+			url: 'tampilan/bahan/crudBahan.php?action=fetchKode', 
+			data: 'kd_bahan' + kd_bahan, 
+			success: function(response) { 
+				$('#kd_bahan').val(response); 
+			}
+		});
+	});
 
   // menambahkan data kedalam database
   $("#addBahan").on("submit", function(e) {
@@ -165,6 +159,7 @@ $(document).ready(function() {
                           title: "Sukses!",
                           text: "Berhasil Menambahkan Data Bahan Persediaan",
                           icon: "success"
+                         
                       });
                       dataTable.ajax.reload();
                   }else{
@@ -196,8 +191,7 @@ $(document).ready(function() {
             $("#editBahan #id").val(data.id);
             $("#editBahan input[name='kd_bahan']").val(data.kd_bahan);
             $("#editBahan input[name='nama_bahan']").val(data.nama_bahan);
-            $("#editBahan .preview_foto").attr("src", "gambar/produk/" + data.foto + "");
-            $("#editBahan #foto_lama").val(data.foto);
+            $("#editBahan input[name='harga']").val(data.harga);
             // menampilkan modal edit
             $('#editModal').modal('hide');
         }
@@ -224,6 +218,7 @@ $(document).ready(function() {
                     title: "Sukses!",
                     text: "Berhasil Merubah Data Bahan Persediaan",
                     icon: "success"
+                    
                 });
                 dataTable.ajax.reload();
             }else{

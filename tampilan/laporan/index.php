@@ -27,83 +27,108 @@
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill" href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">Persediaan Masuk</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-three-setting-tab" data-toggle="pill" href="#custom-tabs-three-setting" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">Mutasi Persediaan</a>
+                  </li>
                 </ul>
               </div>
               <div class="card-body">
+                <div class="col-12">
+                  <h4><i class="fas fa-globe"></i> <?= $data['nama']?></h4>
+                </div>
                 <div class="tab-content" id="custom-tabs-three-tabContent">
                   <div class="tab-pane fade show active" id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
-                    <center><h3>Laporan Stok Barang</h3></center>
-                    <table id="tableStok" class="table table-bordered" style="overflow-x:auto;width:100%">
+                    <center><h3>Laporan Stok Persediaan</h3></center><br>
+                    <table id="tablePersediaan" class="table table-bordered" style="overflow-x:auto;width:100%">
                       <thead>
                       <tr>
-                        <th>Kode</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Alamat</th>
-                        <th>Jumlah</th>
-                        <th>Total Belanja</th>
-                        <th>Tanggal</th>
-                        <th>Action</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Stok Masuk</th>
+                        <th>Stok Keluar</th>
+                        <th>Sisa Stok</th>
+                        <th>Harga</th>
+                        <th>Total Nilai Stok</th>
                       </tr>
                       </thead>
-                    </table>
-
+                    </table><br>
+                    <div class="col-12">
+                      <center><a href="./tampilan/laporan/cetak/print.php" class="btn btn-success pull-right" target="blank"><i class="fa fa-print"></i> Print Data</a></center>
+                    </div>
+                    
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
-                    <center><h3>Laporan Persediaan Keluar</h3></center>
+                    <center><h3>Laporan Persediaan Keluar</h3></center><br>
                     <table id="tableKeluar" class="table table-bordered" style="overflow-x:auto;width:100%">
                       <thead>
                       <tr>
+                        <th>Tanggal</th>
                         <th>Kode</th>
+                        <th>Bahan</th>
                         <th>Nama Pelanggan</th>
                         <th>Alamat</th>
                         <th>Jumlah</th>
-                        <th>Total Belanja</th>
-                        <th>Tanggal</th>
-                        <th>Action</th>
+                        <th>Harga Jual</th>
+                        <th>Total Jual</th>
                       </tr>
                       </thead>
                     </table>
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel" aria-labelledby="custom-tabs-three-messages-tab">
-                    <center><h3>Laporan Persediaan Masuk</h3></center>
+                    <center><h3>Laporan Persediaan Masuk</h3></center><br>
                     <table id="tableMasuk" class="table table-bordered" style="overflow-x:auto;width:100%">
                       <thead>
                       <tr>
+                        <th>Tanggal</th>
                         <th>Kode</th>
-                        <th>Nama Pelanggan</th>
+                        <th>Bahan</th>
+                        <th>Nama Supplier</th>
                         <th>Alamat</th>
                         <th>Jumlah</th>
-                        <th>Total Belanja</th>
+                        <th>Harga Beli</th>
+                        <th>Total Beli</th>
+                      </tr>
+                      </thead>
+                    </table>
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-three-setting" role="tabpanel" aria-labelledby="custom-tabs-three-setting-tab">
+                  <center><h3>Laporan Mutasi Persediaan</h3></center><br>
+                    <table id="tableStok" class="table table-bordered" style="overflow-x:auto;width:100%">
+                      <thead>
+                      <tr>
                         <th>Tanggal</th>
-                        <th>Action</th>
+                        <th>Kode</th>
+                        <th>Bahan</th>
+                        <th><center> Status</center></th>
+                        <th>Jumlah</th>
+                        <th>Harga</th>
+                        <th>Total</th>
                       </tr>
                       </thead>
                     </table>
                   </div>
                 </div>
               </div>
-              <!-- /.card -->
+              <div class="card-footer">
+
+              </div>
             </div>
           </div>
         </div>
   </div>
 </section>
 
-<script>
-  $(document).ready(function () {
-    // Tabel Data Stok
-    let dataTable = $('#tableStok').DataTable({
-        processing: true,
-      
-    });
-    
-  });
 
+<script>
   $(document).ready(function () {
     // Tabel Data Keluar
     let dataTable = $('#tableKeluar').DataTable({
         processing: true,
-      
+        order: [[ 0, "desc" ]],
+        ajax: {
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokKeluar',
+        type: 'POST',
+      }
     });
     
   });
@@ -112,7 +137,38 @@
     // Tabel Data Masuk
     let dataTable = $('#tableMasuk').DataTable({
         processing: true,
+        order: [[ 0, "desc" ]],
+        ajax: {
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokMasuk',
+        type: 'POST',
+      }
       
+    });
+    
+  });
+
+  $(document).ready(function () {
+    // Tabel Data persediaan
+    let dataTable = $('#tablePersediaan').DataTable({
+        processing: true,
+        ajax: {
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokPersediaan',
+        type: 'POST',
+      }
+      
+    });
+    
+  });
+
+  $(document).ready(function () {
+    // Tabel Data Stok
+    let dataTable = $('#tableStok').DataTable({
+        processing: true,
+        order: [[ 0, "desc" ]],
+        ajax: {
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStok',
+        type: 'POST',
+      }
     });
     
   });

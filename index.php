@@ -27,6 +27,9 @@ session_start();
                         if($page == "index"){
                             include "tampilan/dashboard/index.php";
                         }
+                        elseif($page == "profil"){
+                            include "tampilan/profil/index.php";
+                        }
                         elseif($page == "bahan"){
                             include "tampilan/bahan/index.php";
                         }
@@ -39,9 +42,6 @@ session_start();
                         elseif($page == "add-persediaan-masuk"){
                             include "tampilan/persediaan-masuk/index-create.php";
                         }
-                        elseif($page == "edit-persediaan-masuk"){
-                            include "tampilan/persediaan-masuk/index-edit.php";
-                        }
                         elseif($page == "detail-persediaan-masuk"){
                             include "tampilan/persediaan-masuk/index-detail.php";
                         }
@@ -49,10 +49,10 @@ session_start();
                             include "tampilan/persediaan-keluar/index.php";
                         }
                         elseif($page == "add-persediaan-keluar"){
-                            include "tampilan/persediaan-keluar/index-insert.php";
+                            include "tampilan/persediaan-keluar/index-create.php";
                         }
-                        elseif($page == "edit-persediaan-keluar"){
-                            include "tampilan/persediaan-keluar/index-edit.php";
+                        elseif($page == "detail-persediaan-keluar"){
+                            include "tampilan/persediaan-keluar/index-detail.php";
                         }
                         elseif($page == "laporan"){
                             include "tampilan/laporan/index.php";

@@ -12,26 +12,27 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
+
+        <div class="alert alert-info alert-dismissible">
+          <h5><i class="icon fas fa-exclamation-triangle"></i> Perhatian!</h5>
+          Mohon isi data dengan cermat, karena data yang telah disimpan tidak dapat diubah kecuali dihapus !!
+        </div>
+
         <div class="card card-primary card-outline">
           <div class="card-header">
             <h3 class="card-title">Tambah Transaksi Keluar</h3>
           </div>
           <div class="card-body">
             <form id="insertData" method="post">
-               <!-- Main content -->
               <div class="invoice p-3 mb-3">
-                <!-- title row -->
                 <div class="row">
                   <div class="col-12">
-                    <h4>
-                      <i class="fas fa-globe"></i> <?= $data['nama']?>
-                      <small class="float-right">Kode : <span id="kd_transaksi_keluar"></span></small>
+                    <h4><i class="fas fa-globe"></i> <?= $data['nama']?>
+                      <center>Nomor : <span id="transaksi_keluar"></span></center>
                     </h4>
                     <hr>
                   </div>
-                  <!-- /.col -->
                 </div>
-                <!-- info row -->
                 <div class="row invoice-info">
                   <div class="col-sm-4 invoice-col">
                     <div class="form-group">
@@ -39,15 +40,12 @@
                       <input type="date" class="form-control" name="tanggal" value="<?= date("Y-m-d") ?>" required>
                     </div>
                   </div>
-                  <!-- /.col -->
                   <div class="col-sm-4 invoice-col">
                     <div class="form-group">
                       <label> Nama Pelanggan : </label>
                       <input type="text" class="form-control" name="nama_pelanggan" required>
                     </div>
-                    
                   </div>
-                  <!-- /.col -->
                   <div class="col-sm-4 invoice-col">
                     <div class="form-group">
                       <label> Alamat Pelanggan : </label>
@@ -56,10 +54,9 @@
                   </div>
                 </div>
                 <br>
-                <!-- Table row -->
                 <div class="row">
                   <div class="col-12 table-responsive">
-                    <table class="table table-bordered table-striped" id="tableTransaksi">
+                    <table class="table table-bordered table-striped" id="tableTransaksiKeluar">
                       <thead>
                       <tr>
                         <th>Product</th>
@@ -76,7 +73,8 @@
                       <tfoot>
                         <th colspan="2" style="text-align: right;">Total Keseluruhan</th>
                         <td id="totaljumlah"></td>
-                        <td colspan="2" id="totalharga"></td>
+                        <td id="totalharga"></td>
+                        <td></td>
                       </tfoot>
                     </table>
                   </div>
@@ -105,22 +103,21 @@ $(document).ready(function() {
   var count = 0;
   $('.tambah').click(function(){
     count = count + 1;
-    $('#tableTransaksi').append('<tr id='+count+'>'+
+    $('#tableTransaksiKeluar').append('<tr id='+count+'>'+
                         '<td>'+
-                          '<select type="text" class="form-control bahan" name="bahan[]" id="bahan'+count+'">'+
-                            '<option disabled selected>-- Pilih --</option>'+
+                          '<select type="text" class="form-control bahan" name="bahan[]" id="bahan'+count+'" required>'+
+                            '<option value="" disabled selected>-- Pilih --</option>'+
                             <?php
-                              $datas = mysqli_query($koneksi,"SELECT persediaan_masuk.kd_persediaan_masuk as kd_persediaan_masuk, persediaan_masuk.kd_bahan as kd_bahan, bahan.nama_bahan as nama_bahan, persediaan_masuk.harga as harga, persediaan_masuk.jumlah as jumlah 
-                                                              FROM persediaan_masuk JOIN bahan ON persediaan_masuk.kd_bahan = bahan.kd_bahan");
-                              while($bahan = mysqli_fetch_array($datas)){
+                              $databahan = mysqli_query($koneksi,"SELECT * FROM bahan");
+                              while($bahan = mysqli_fetch_array($databahan)){
                               ?>
-                              '<option value="<?= $bahan['kd_persediaan_masuk'] ?>"><?= $bahan['kd_bahan'] ?> - <?= $bahan['nama_bahan']; ?></option>'+
+                              '<option value="<?= $bahan['kd_bahan'] ?>"><?= $bahan['nama_bahan']; ?> - Stok : <?= $bahan['stok']; ?></option>'+
                             <?php } ?>
                           '</select>'+
                         '</td>'+
-                        '<td><input type="text" class="form-control harga" name="harga[]" id="harga'+count+'"></td>'+
-                        '<td><input type="text" class="form-control jumlah" name="jumlah[]" id="jumlah'+count+'"></td>'+
-                        '<td><input type="text" class="form-control total" name="total[]" id="total'+count+'"></td>'+
+                        '<td><input type="number" class="form-control harga" name="harga[]" id="harga'+count+'" readonly="true"></td>'+
+                        '<td><input type="number" class="form-control jumlah" name="jumlah[]" id="jumlah'+count+'"><span id="result'+count+'"></span></td>'+
+                        '<td><input type="number" class="form-control total" name="total[]" id="total'+count+'" disabled></td>'+
                         '<td><center>'+
                           '<button type="button" class="btn btn-danger btn-xs remove" id="remove'+count+'">'+
                            ' <i class="fas fa-trash"></i>'+
@@ -128,57 +125,58 @@ $(document).ready(function() {
                         '</td>'+
                       '</tr>');
 
-    // Input otomati 
-    $('#bahan'+count+'').change(function() { 
-      var bahan = $(this).val(); 
-      $.ajax({
-        type: 'POST', 
-        url: 'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchSelect', 
-        data: 'kd_persediaan_masuk=' + bahan, 
-        success: function(response) { 
-          $('#harga'+count+'').val(response); 
-        }
-      });
+        // Input otomati 
+        $('#bahan'+count+'').change(function() { 
+        var bahan = $('#bahan'+count+'').val(); 
+            $.ajax({
+                type: 'POST', 
+                url: 'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchSelect', 
+                data: 'kd_bahan=' + bahan, 
+                success: function(response) { 
+                $('#harga'+count+'').val(response); 
+                }
+            });
+        });
+
+      
+        // Total Otomatis
+        $(document).ready(function () {
+            $("#harga"+count+", #jumlah"+count+"").keyup(function () {
+            $("#total"+count+"").val($("#harga"+count+"").val() * $("#jumlah"+count+"").val()); 
+            var total = 0;
+            var jumlah = 0;
+            $('.total').each(function(){
+                $("#totalharga").text(total += parseFloat($(this).val()));
+            });
+            $('.jumlah').each(function(){
+                $("#totaljumlah").text(jumlah += parseFloat($(this).val()));
+            });   
+            });
+        });
+
+        // delet kolom 
+        $(document).on('click', '#remove'+count+'', function(){
+        $(this).closest('tr').remove();
+        });
+
+
     });
 
-    // Total Otomatis
-    $(document).ready(function () {
-        $("#harga"+count+", #jumlah"+count+"").keyup(function () {
-          $("#total"+count+"").val($("#harga"+count+"").val() * $("#jumlah"+count+"").val()); 
-          var total = 0;
-          var jumlah = 0;
-          $('.total').each(function(){
-            $("#totalharga").text(total += parseFloat($(this).val()));
-          });
-          $('.jumlah').each(function(){
-            $("#totaljumlah").text(jumlah += parseFloat($(this).val()));
-          });   
+    // kode otomatis 
+    $(function () {
+        var transaksi_keluar = $(this).text(); 
+        $.ajax({
+            type: 'POST', 
+            url: 'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchKode', 
+            data: 'transaksi_keluar' + transaksi_keluar, 
+            success: function(response) { 
+            $('#transaksi_keluar').text(response); 
+            }
         });
     });
 
-    // delet kolom 
-    $(document).on('click', '#remove'+count+'', function(){
-      $(this).closest('tr').remove();
-    });
-
-  });
-
-  // kode otomatis 
-  $(function () {
-      var kd_persediaan_keluar = $(this).text(); 
-      $.ajax({
-        type: 'POST', 
-        url: 'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchKode', 
-        data: 'kd_persediaan_keluar' + kd_persediaan_keluar, 
-        success: function(response) { 
-          $('#kd_persediaan_keluar').val(response); 
-          $('#kd_transaksi_keluar').text(response); 
-        }
-      });
-  });
-
     //Tambah data ke database
-  $("#insertData").on("submit", function(e) {
+    $("#insertData").on("submit", function(e) {
         e.preventDefault();
         $.ajax({
               url: "tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=insertData",
@@ -207,10 +205,10 @@ $(document).ready(function() {
                   } 
               }
         });
-  });
-  
+    });
 
 });
+
 
 </script>
 

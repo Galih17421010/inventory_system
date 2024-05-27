@@ -12,6 +12,12 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
+
+        <div class="alert alert-info alert-dismissible">
+          <h5><i class="icon fas fa-exclamation-triangle"></i> Perhatian!</h5>
+          Mohon isi data dengan cermat, karena data yang telah disimpan tidak dapat diubah kecuali dihapus !!
+        </div>
+
         <div class="card card-primary card-outline">
           <div class="card-header">
             <h3 class="card-title">Form Transaksi Masuk</h3>
@@ -40,7 +46,7 @@
                     <div class="form-group">
                       <label> Nama Supplier : </label>
                       <Select class="form-control" id="supplier" name="supplier" required>
-                        <option>-- Pilih Supplier --</option>
+                        <option value="" disabled selected>-- Pilih Supplier --</option>
                             <?php
                               $supplier = mysqli_query($koneksi,"SELECT * FROM suppliers");
                               while($sup = mysqli_fetch_array($supplier)){
@@ -60,10 +66,9 @@
                       <thead>
                       <tr>
                         <th>Product</th>
-                        <th>Harga Beli</th>
+                        <th>Harga</th>
                         <th>Jumlah</th>
                         <th>Subtotal</th>
-                        <th>Harga Jual</th>
                         <th><center>
                           <button type="button" class="btn btn-success btn-xs tambah" name="tambah" id="tambah">
                             <i class="fas fa-plus-circle"></i>
@@ -74,7 +79,6 @@
                         <th colspan="2" style="text-align: right;">Total Keseluruhan</th>
                         <td id="totaljumlah"></td>
                         <td id="totalharga"></td>
-                        <td></td>
                         <td></td>
                       </tfoot>
                     </table>
@@ -108,19 +112,18 @@
       $('#tableTransaksiMasuk').append('<tr id='+count+'>'+
                           '<td>'+
                             '<select type="text" class="form-control bahan" name="bahan[]" id="bahan'+count+'" required>'+
-                              '<option disabled selected>-- Pilih --</option>'+
+                              '<option value="" disabled selected>-- Pilih --</option>'+
                               <?php
                                 $bahans = mysqli_query($koneksi,"SELECT * FROM bahan");
                                 while($bahan = mysqli_fetch_array($bahans)){
                                 ?>
-                                '<option value="<?= $bahan['kd_bahan'] ?>"><?= $bahan['kd_bahan'] ?> - <?= $bahan['nama_bahan']; ?></option>'+
+                                '<option value="<?= $bahan['kd_bahan'] ?>"><?= $bahan['nama_bahan']; ?></option>'+
                               <?php } ?>
                             '</select>'+
                           '</td>'+
-                          '<td><input type="number" class="form-control harga_beli" name="harga_beli[]" id="harga_beli'+count+'" required></td>'+
+                          '<td><input type="number" class="form-control harga" name="harga[]" id="harga'+count+'" readonly="true"></td>'+
                           '<td><input type="number" class="form-control jumlah" name="jumlah[]" id="jumlah'+count+'" required></td>'+
                           '<td><input type="number" class="form-control total" name="total[]" id="total'+count+'" disabled></td>'+
-                          '<td><input type="number" class="form-control harga_jual" name="harga_jual[]" id="harga_jual'+count+'" required></td>'+
                           '<td><center>'+
                             '<button type="button" class="btn btn-danger btn-xs remove" id="remove'+count+'">'+
                             ' <i class="fas fa-trash"></i>'+
@@ -128,10 +131,24 @@
                           '</td>'+
                         '</tr>');
 
+      
+      // Input otomati 
+      $('#bahan'+count+'').change(function() { 
+        var bahan = $(this).val(); 
+            $.ajax({
+                type: 'POST', 
+                url: 'tampilan/persediaan-masuk/crudPersediaanMasuk.php?action=fetchSelect', 
+                data: 'kd_bahan=' + bahan, 
+                success: function(response) { 
+                $('#harga'+count+'').val(response); 
+                }
+            });
+      });
+
       // Total Otomatis
       $(document).ready(function () {
-          $("#harga_beli"+count+", #jumlah"+count+"").keyup(function () {
-            $("#total"+count+"").val($("#harga_beli"+count+"").val() * $("#jumlah"+count+"").val()); 
+          $("#harga"+count+", #jumlah"+count+"").keyup(function () {
+            $("#total"+count+"").val($("#harga"+count+"").val() * $("#jumlah"+count+"").val()); 
             var total = 0;
             var jumlah = 0;
             $('.total').each(function(){
@@ -178,13 +195,12 @@
                     var status = json.status;
                     if (status == 'true') {
                         $('#insertData')[0].reset();
-                        location.href = "?page=persediaan-masuk";
                         Swal.fire({
                             title: "Sukses!",
                             text: "Berhasil Menambahkan Data Persediaan masuk",
                             icon: "success",
                         });
-                        
+                        location.href = "?page=persediaan-masuk";
                     }else{
                         Swal.fire({
                         icon: "error",

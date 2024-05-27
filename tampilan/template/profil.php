@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-dark navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -20,7 +20,7 @@
               <i class="fas fa-caret-down"></i>               
           </a>
           <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-              <a class="dropdown-item" href="#"><span class="fa fa-user"></span> My Account</a>
+              <a class="dropdown-item" href="?page=profil"><span class="fa fa-user"></span> My Account</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="logout.php"><span class="fas fa-sign-out-alt"></span> Logout</a>
           </div>

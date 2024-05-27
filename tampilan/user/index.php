@@ -131,10 +131,10 @@
               <label>Email</label>
                 <input type="email" class="form-control" id="addEmail" name="email" placeholder="Alamat Email Gunakan @ ..." required>
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
               <label>Password</label>
                 <input type="password" class="form-control" id="addPassword" name="password" placeholder="Set Password..." required>
-              </div>
+              </div> -->
               <div class="form-group">
               <label>Nomor Telephon</label>
                 <input type="number" class="form-control" id="addNotelp" name="no_telp" placeholder="Nomor Berupa Angka Tanpa Simbol..." required>
@@ -240,7 +240,7 @@ $(document).ready(function() {
             $("#editUser input[name='nama_lengkap']").val(data.nama_lengkap);
             $("#editUser input[name='email']").val(data.email);
             $("#editUser input[name='no_telp']").val(data.no_telp);
-            $("#editUser input[name='password']").val(data.password);
+            // $("#editUser input[name='password']").val(data.password);
             $("#editUser textarea[name='alamat']").val(data.alamat);
             $("#editUser #addStatus").val(data.status);
             $("#editUser .preview_foto").attr("src", "gambar/produk/" + data.foto + "");

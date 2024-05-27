@@ -105,7 +105,6 @@ if ($_GET["action"] === "updateData") {
       $id = mysqli_real_escape_string($koneksi, $_POST["id"]);
       $nama_lengkap = mysqli_real_escape_string($koneksi, $_POST["nama_lengkap"]);
       $email = mysqli_real_escape_string($koneksi, $_POST["email"]);
-      $password = mysqli_real_escape_string($koneksi, $_POST["password"]);
       $no_telp = mysqli_real_escape_string($koneksi, $_POST["no_telp"]);
       $alamat = mysqli_real_escape_string($koneksi, $_POST["alamat"]);
       $status = mysqli_real_escape_string($koneksi, $_POST["status"]);
@@ -120,7 +119,7 @@ if ($_GET["action"] === "updateData") {
         $foto = mysqli_real_escape_string($koneksi, $_POST["foto_lama"]);
       }
   
-      $sql = "UPDATE users SET nama_lengkap = '$nama_lengkap', email = '$email', password='$password', no_telp = '$no_telp', alamat = '$alamat', foto = '$foto', status = '$status', updated_at = NOW() WHERE id = '$id'";
+      $sql = "UPDATE users SET nama_lengkap = '$nama_lengkap', email = '$email', no_telp = '$no_telp', alamat = '$alamat', foto = '$foto', status = '$status', updated_at = NOW() WHERE id = '$id'";
       $query= mysqli_query($koneksi,$sql);
       $lastId = mysqli_insert_id($koneksi);
         if($query == true)

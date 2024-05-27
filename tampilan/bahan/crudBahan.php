@@ -1,6 +1,21 @@
 <?php 
 require_once '../../config/koneksi.php';
 
+// Fungsi kode otomatis
+if ($_GET["action"] === "fetchKode") {
+    $qryIdBahan = $koneksi->query("SELECT MAX(kd_bahan) from bahan");
+    $rsltBahan = $qryIdBahan->fetch_array();
+    $empty = $rsltBahan[0];
+    $num = substr($empty,-3, 3);
+    $num++;
+    $char = "B";
+    $kd_bahan = sprintf("%s%03s",$char,$num);
+
+  echo $kd_bahan;
+  mysqli_close($koneksi);
+}
+
+
 // function Untuk Tabel data
 if ($_GET["action"] === "fetchData") {
     $output= array();
@@ -22,11 +37,10 @@ if ($_GET["action"] === "fetchData") {
         $sub_array = array();   
         $sub_array[] = $row['kd_bahan'];
         $sub_array[] = $row['nama_bahan'];
-        $sub_array[] = '<img src="gambar/produk/'.$row["foto"].'" style="width:50px;height:50px;border:1px solid gray;border-radius:8px;object-fit:cover"></button>';
         $sub_array[] = $stok;
+        $sub_array[] = 'Rp '.number_format($row['harga'],0,',','.');
         $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["id"].'" class="btn btn-success btn-sm editBtn" data-keyboard="false" data-backdrop="static"><i class="fa fa-edit"></i> Edit</button>  
-                        <button type="button" value="'.$row["id"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>
-                        <input type="hidden" class="delete_image" value="' .$row["foto"].'">';
+                        <button type="button" value="'.$row["id"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>';
         $data[] = $sub_array;
     }
     $output = array(
@@ -49,15 +63,12 @@ if ($_GET["action"] === "insertData") {
       $kd_bahan = sprintf("%s%03s",$char,$num);
 
       $nama_bahan = mysqli_real_escape_string($koneksi, $_POST["nama_bahan"]);
+      $harga = mysqli_real_escape_string($koneksi, $_POST["harga"]);
   
-      // Simpan gambar kedalam folder
-      $path = "../../gambar/produk/";
-      $original_name = $_FILES["foto"]["name"];
-      $foto = uniqid() . time() . "." . pathinfo($original_name, PATHINFO_EXTENSION);
-      move_uploaded_file($_FILES["foto"]["tmp_name"], $path . $foto);
+      
         
-      $sql = "INSERT INTO bahan (kd_bahan, nama_bahan, foto, created_at, updated_at) 
-              VALUES ('$kd_bahan','$nama_bahan','$foto',NOW(),NOW())";
+      $sql = "INSERT INTO bahan (kd_bahan, nama_bahan, harga, created_at, updated_at) 
+              VALUES ('$kd_bahan','$nama_bahan','$harga',NOW(),NOW())";
       $query= mysqli_query($koneksi,$sql);
       $lastId = mysqli_insert_id($koneksi);
       if($query == true)
@@ -99,22 +110,12 @@ if ($_GET["action"] === "fetchSingle") {
 
 // Update Data
 if ($_GET["action"] === "updateData") {
-    if (!empty($_POST["nama_bahan"]) && !empty($_POST["satuan"])) {
+    if (!empty($_POST["nama_bahan"]) && !empty($_POST["harga"])) {
       $id = mysqli_real_escape_string($koneksi, $_POST["id"]);
       $nama_bahan = mysqli_real_escape_string($koneksi, $_POST["nama_bahan"]);
-      $satuan = mysqli_real_escape_string($koneksi, $_POST["satuan"]);
-  
-      if ($_FILES["foto"]["size"] != 0) {
-        $path = "../../gambar/produk/";
-        $original_name = $_FILES["foto"]["name"];
-        $foto = uniqid() . time() . "." . pathinfo($original_name, PATHINFO_EXTENSION);
-        move_uploaded_file($_FILES["foto"]["tmp_name"], $path . $foto);
-        unlink( $path . $_POST["foto_lama"]);
-      } else {
-        $foto = mysqli_real_escape_string($koneksi, $_POST["foto_lama"]);
-      }
-  
-      $sql = "UPDATE bahan SET nama_bahan = '$nama_bahan', satuan = '$satuan', foto = '$foto', updated_at = NOW() WHERE id = '$id'";
+      $harga = mysqli_real_escape_string($koneksi, $_POST["harga"]);
+    
+      $sql = "UPDATE bahan SET nama_bahan = '$nama_bahan', harga = '$harga', updated_at = NOW() WHERE id = '$id'";
       $query= mysqli_query($koneksi,$sql);
       $lastId = mysqli_insert_id($koneksi);
         if($query == true)
@@ -139,14 +140,10 @@ if ($_GET["action"] === "updateData") {
 // function to delete data
 if ($_GET["action"] === "deleteData") {
   $id = $_POST["id"];
-  $delete_image = $_POST["delete_image"];
-
   $sql = "DELETE FROM bahan WHERE `id`=$id";
   $delete =mysqli_query($koneksi,$sql);
   if($delete==true)
   {
-      $path = "../../gambar/produk/";
-      unlink($path . $delete_image);
       $data = array(
           'status'=>'success',
       );

@@ -24,11 +24,11 @@
                       <thead>
                       <tr>
                         <th>Kode</th>
+                        <th>Tanggal</th>
                         <th>Nama Pelanggan</th>
                         <th>Alamat</th>
                         <th>Jumlah</th>
                         <th>Total Belanja</th>
-                        <th>Tanggal</th>
                         <th>Action</th>
                       </tr>
                       </thead>
@@ -46,6 +46,7 @@ $(document).ready(function(){
     // Tabel Data
     let dataTable = $('#tableMaster').DataTable({
         processing: true,
+        order: [[ 0, "desc" ]],
         ajax: {
         url:'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchData',
         type: 'POST',
@@ -55,7 +56,7 @@ $(document).ready(function(){
 
     // function to delete data
   $("#tableMaster").on("click", ".deleteBtn", function() {
-        var kd_persediaan_keluar = $(this).val();
+        var transaksi_keluar = $(this).val();
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -70,7 +71,7 @@ $(document).ready(function(){
                         url: "tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=deleteData",
                         type: "POST",
                         dataType: "json",
-                        data: {kd_persediaan_keluar},
+                        data: {transaksi_keluar},
                         success: function(response) {
                             Swal.fire({
                             title: "Deleted!",

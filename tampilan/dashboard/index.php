@@ -1,143 +1,108 @@
-<h1 class="">Selamat datang, <?= $_SESSION['log']['nama_lengkap'] ?></h1>
-<hr>
-<div class="row">
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-light elevation-1"><i class="fas fa-th-list"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Prison List</span>
-        <span class="info-box-number text-right h5">
-         75
-        </span>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="">Selamat datang, <?= $_SESSION['log']['nama_lengkap'] ?></h1>
+        <hr>
       </div>
-      <!-- /.info-box-content -->
     </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-navy elevation-1"><i class="fas fa-border-all"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Cell Block</span>
-        <span class="info-box-number text-right h5">
-          757
-        </span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-dark elevation-1"><i class="fas fa-list"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Crimes</span>
-        <span class="info-box-number text-right h5">
-         75
-        </span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-  
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-navy elevation-1"><i class="fas fa-bars"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Actions</span>
-        <span class="info-box-number text-right h5">
-          75
-        </span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-primary elevation-1"><i class="fas fa-user"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Currrent Inmates</span>
-        <span class="info-box-number text-right h5">
-          34
-        </span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-success elevation-1"><i class="fas fa-user"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Released Inmates</span>
-        <span class="info-box-number text-right h5">
-        15
-        </span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-  
-  <div class="col-12 col-sm-3 col-md-3">
-    <div class="info-box">
-      <span class="info-box-icon bg-gradient-warning elevation-1"><i class="fas fa-file-alt"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">Today's Visits</span>
-        <span class="info-box-number text-right h5">
-          11
-          <?php ?>
-        </span>
-      </div>
-      <!-- /.info-box-content -->
-    </div>
-    <!-- /.info-box -->
-  </div>
-  <!-- /.col -->
-</div>
 
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">List of All Report</h3>
-              </div>
-              <!-- /.card-header -->
-
-              <div class="card-body">
-                <table id="tableMaster" class="table table-bordered">
-                  <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>Kode Laporan</th>
-                    <th>Nama Laporan</th>
-                    <th>Keterangan</th>
-                    <th>Action</th>
-                  </tr> 
-                  </thead>
-                </table>
-               </div>
+    <?php
+      $querybahan = mysqli_query($koneksi,"SELECT COUNT(kd_bahan) as bahan, SUM(stok) as stok FROM bahan");
+      $bahan = mysqli_fetch_array($querybahan);
+    ?>
+    <div class="row">
+      <div class="col-lg-4 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>Stok <?= $bahan['stok']?></h3>
+            <p>Data Persediaan <?= $bahan['bahan']?> Bahan</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-shopping-bag"></i>
+          </div>
+          <a href="?page=bahan" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
+      </div>
+
+      <?php
+        $querysupplier = mysqli_query($koneksi,"SELECT COUNT(kd_supplier) as supplier FROM suppliers");
+        $supplier = mysqli_fetch_array($querysupplier);
+      ?>
+      <div class="col-lg-4 col-6">
+        <!-- small box -->
+        <div class="small-box bg-gray">
+          <div class="inner">
+            <h3><?= $supplier['supplier']?></h3>
+            <p>Supplier</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-users"></i>
+          </div>
+          <a href="?page=supplier" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <?php
+        $querylaporan = mysqli_query($koneksi,"SELECT (SELECT COUNT(kd_persediaan_masuk) as laporan FROM persediaan_masuk)+(SELECT COUNT(kd_persediaan_keluar) as laporan FROM persediaan_keluar) AS laporan");
+        $laporan = mysqli_fetch_array($querylaporan);
+      ?>
+      <div class="col-lg-4 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3><?= $laporan['laporan']?> Persediaan</h3>
+            <p>Laporan</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-print"></i>
+          </div>
+          <a href="?page=laporan" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <?php
+        $querymasuk = mysqli_query($koneksi,"SELECT COUNT(kd_persediaan_masuk) as masuk, sum(jumlah) as total FROM persediaan_masuk");
+        $persediaan_masuk = mysqli_fetch_array($querymasuk);
+      ?>
+      <div class="col-lg-4 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3><?= $persediaan_masuk['total']?></h3>
+            <p>Persediaan Masuk <?= $persediaan_masuk['masuk']?> Data</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-folder-plus"></i>
+          </div>
+          <a href="?page=persediaan-masuk" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <?php
+        $querykeluar = mysqli_query($koneksi,"SELECT COUNT(kd_persediaan_keluar) as keluar, sum(jumlah) as total FROM persediaan_keluar");
+        $persediaan_keluar = mysqli_fetch_array($querykeluar);
+      ?>
+      <div class="col-lg-4 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3><?= $persediaan_keluar['total']?></h3>
+            <p>Persediaan Keluar <?= $persediaan_keluar['keluar']?> Data</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-folder-minus"></i>
+          </div>
+          <a href="?page=persediaan-keluar" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      
     </div>
-</div>
 
-<script>
-  $(document).ready(function() {
-  // Tabel Data
-  let dataTable = $('#tableMaster').DataTable({
-    processing: true,
-   
-  });
+  </div>
+</section>
 
-});
-</script>
+
+

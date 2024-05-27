@@ -9,9 +9,20 @@ if ($_GET["action"] === "fetchKode") {
     $num = substr($empty,-3, 3);
     $num++;
     $char = "TM";
-    $kd_persediaan_masuk = sprintf("%s%03s",$char,$num);
+    $transaksi_masuk = sprintf("%s%03s",$char,$num);
 
-    echo $kd_persediaan_masuk;
+    echo $transaksi_masuk;
+    mysqli_close($koneksi);
+}
+
+if ($_GET["action"] === "fetchSelect") {
+    $kd_bahan = $_POST["kd_bahan"];
+    $sql = "SELECT * FROM bahan where kd_bahan = '$kd_bahan'";
+    $result = mysqli_query($koneksi, $sql);
+
+
+    $data = mysqli_fetch_assoc($result);
+    echo $data['harga'];
     mysqli_close($koneksi);
 }
 
@@ -32,7 +43,6 @@ if ($_GET["action"] === "fetchData") {
     while($row = mysqli_fetch_assoc($query))
     {
         
-
         $sub_array = array();   
         $sub_array[] = $row['transaksi_masuk'];
         $sub_array[] = date('d/m/Y', strtotime($row['tanggal']));
@@ -41,8 +51,6 @@ if ($_GET["action"] === "fetchData") {
         $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
         $sub_array[] = '<a type="button" href="?page=detail-persediaan-masuk&id='.$row["transaksi_masuk"].'" class="btn btn-info btn-sm"><i class="fa fa-file-alt"></i> Detail</a>
                         <button type="button" value="'.$row["transaksi_masuk"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>';
-                        // <a type="button" href="?page=edit-persediaan-masuk&id='.$row["transaksi_masuk"].'" class="btn btn-success btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                        // <a href="tampilan/persediaan-masuk/cetak/print.php?id='.$row["transaksi_masuk"].'" class="btn btn-primary btn-sm printBtn" target="blank"><i class="fa fa-print"> Print</i></a>
                         
         $data[] = $sub_array;
     }
@@ -79,14 +87,13 @@ if ($_GET["action"] === "insertData") {
         $kd_persediaan_masuk = sprintf("%s%03s",$char,$num);
 
         $kd_bahan = mysqli_real_escape_string($koneksi, $_POST["bahan"][$i]);
-        $harga_beli = mysqli_real_escape_string($koneksi, $_POST["harga_beli"][$i]);
+        $harga = mysqli_real_escape_string($koneksi, $_POST["harga"][$i]);
         $jumlah = mysqli_real_escape_string($koneksi, $_POST["jumlah"][$i]);
-        $total = $harga_beli * $jumlah;
-        $harga_jual = mysqli_real_escape_string($koneksi, $_POST["harga_jual"][$i]);
+        $total = $harga * $jumlah;
 
 
-        $sql = "INSERT INTO persediaan_masuk (transaksi_masuk, kd_persediaan_masuk, tanggal, kd_supplier, kd_bahan, harga_beli, jumlah, total, harga_jual, created_at, updated_at) 
-                    VALUES ('$transaksi_masuk','$kd_persediaan_masuk','$tanggal','$kd_supplier','$kd_bahan','$harga_beli','$jumlah','$total','$harga_jual',NOW(),NOW())";
+        $sql = "INSERT INTO persediaan_masuk (transaksi_masuk, kd_persediaan_masuk, tanggal, kd_supplier, kd_bahan, harga, jumlah, total, created_at, updated_at) 
+                    VALUES ('$transaksi_masuk','$kd_persediaan_masuk','$tanggal','$kd_supplier','$kd_bahan','$harga','$jumlah','$total',NOW(),NOW())";
         $query= mysqli_query($koneksi,$sql);
         $lastId = mysqli_insert_id($koneksi);
     }
@@ -106,82 +113,22 @@ if ($_GET["action"] === "insertData") {
     } 
 }
 
-// Edit data
-if ($_GET["action"] === "fetchSingle") {
-    $id = $_POST["id"];
-    $sql = "SELECT * FROM persediaan_masuk WHERE id = $id";
-    $result = mysqli_query($koneksi, $sql);
-    if (mysqli_num_rows($result) > 0) {
-      $data = mysqli_fetch_assoc($result);
-      header("Content-Type: application/json");
-      echo json_encode([
-        "statusCode" => 200,
-        "data" => $data
-      ]);
-    } else {
-      echo json_encode([
-        "statusCode" => 404,
-        "message" => "No user found with this id"
-      ]);
-    }
-    mysqli_close($koneksi);
-}
-
-// Update Data
-if ($_GET["action"] === "updateData") {
-    if (!empty($_POST["harga"]) && !empty($_POST["jumlah"])) {
-        $id = mysqli_real_escape_string($koneksi, $_POST["id"]);
-        $kd_supplier = mysqli_real_escape_string($koneksi, $_POST["kd_supplier"]);
-        $kd_bahan = mysqli_real_escape_string($koneksi, $_POST["kd_bahan"]);
-        $tanggal = mysqli_real_escape_string($koneksi, $_POST["tanggal"]);
-        $harga = mysqli_real_escape_string($koneksi, $_POST["harga"]);
-        $jumlah = mysqli_real_escape_string($koneksi, $_POST["jumlah"]);
-        $total = $harga * $jumlah ;
-  
-      $sql = "UPDATE persediaan_masuk SET tanggal = '$tanggal', kd_supplier = '$kd_supplier', kd_bahan = '$kd_bahan', harga = '$harga', jumlah = '$jumlah', total = '$total', updated_at = NOW() WHERE id = '$id'";
-      $query= mysqli_query($koneksi,$sql);
-      $lastId = mysqli_insert_id($koneksi);
-        if($query == true)
-        {
-            $data = array(
-                'status'=>'true',
-            );
-            echo json_encode($data);
-        }
-        else
-        {
-             $data = array(
-                'status'=>'false',
-            );
-            echo json_encode($data);
-        }
-  
-      mysqli_close($koneksi);
-    } 
-}
-
-
 // function to delete data
 if ($_GET["action"] === "deleteData") {
-    $id = $_POST["id"];
-  
-    $sql = "DELETE FROM persediaan_masuk WHERE `id`=$id";
-    $delete =mysqli_query($koneksi,$sql);
-    if($delete==true)
-    {
+        $transaksi_masuk = $_POST["id"];
+        $sql = "DELETE FROM persediaan_masuk WHERE transaksi_masuk = '$transaksi_masuk'";
+        $delete = mysqli_query($koneksi,$sql);
+    if($delete==true){
         $data = array(
             'status'=>'success',
         );
         echo json_encode($data);
-    }
-    else
-    {
+    }else{
         $data = array(
             'status'=>'failed',
         );
         echo json_encode($data);
     } 
 }
-
 
 ?>
