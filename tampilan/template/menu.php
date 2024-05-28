@@ -66,21 +66,26 @@
               </p>
             </a>
           </li>
-          <div class="nav-header">
-                Setting
-            </div> 
-          <li class="nav-item">
-            <a href="?page=user" class="nav-link">
-              <i class="nav-icon fas fa-users-cog"></i>
-              <p>Users</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="?page=system" class="nav-link">
-              <i class="nav-icon fas fas fa-tools"></i>
-              <p>Sistem Informasi</p>
-            </a>
-          </li>
+
+          <?php 
+          if ( $_SESSION['log']['status'] == 2 ) {
+            echo '<div class="nav-header">
+                      Setting
+                  </div> 
+                <li class="nav-item">
+                  <a href="?page=user" class="nav-link">
+                    <i class="nav-icon fas fa-users-cog"></i>
+                    <p>Users</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="?page=system" class="nav-link">
+                    <i class="nav-icon fas fas fa-tools"></i>
+                    <p>Sistem Informasi</p>
+                  </a>
+                </li>';
+          } ?>
+          
         </ul>
       </nav>
     </div>

@@ -20,8 +20,7 @@ session_start();
             <div class="content-wrapper">
                 <div class="content">
                     <div class="container-fluid">
-                    <?php   
-                            $page = isset($_GET['page']) ? $_GET['page'] : 'index'; ?>
+                    <?php  $page = isset($_GET['page']) ? $_GET['page'] : 'index'; ?>
                     <?php      
                        
                         if($page == "index"){

@@ -116,7 +116,7 @@ $(document).ready(function() {
                           '</select>'+
                         '</td>'+
                         '<td><input type="number" class="form-control harga" name="harga[]" id="harga'+count+'" readonly="true"></td>'+
-                        '<td><input type="number" class="form-control jumlah" name="jumlah[]" id="jumlah'+count+'"><span id="result'+count+'"></span></td>'+
+                        '<td><input type="number" class="form-control jumlah" max="" name="jumlah[]" id="jumlah'+count+'"><span id="result'+count+'"></span></td>'+
                         '<td><input type="number" class="form-control total" name="total[]" id="total'+count+'" disabled></td>'+
                         '<td><center>'+
                           '<button type="button" class="btn btn-danger btn-xs remove" id="remove'+count+'">'+
@@ -127,13 +127,31 @@ $(document).ready(function() {
 
         // Input otomati 
         $('#bahan'+count+'').change(function() { 
-        var bahan = $('#bahan'+count+'').val(); 
+        var bahan = $('#bahan'+count+'').val();
             $.ajax({
                 type: 'POST', 
                 url: 'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchSelect', 
                 data: 'kd_bahan=' + bahan, 
                 success: function(response) { 
                 $('#harga'+count+'').val(response); 
+                }
+            });
+        });
+
+        // Cek Stok 
+        $('#jumlah'+count+'').change(function() { 
+        var bahan = $('#bahan'+count+'').val(); 
+        var stok = $('#jumlah'+count+'').val(); 
+            $.ajax({
+                type: 'POST', 
+                url: 'tampilan/persediaan-keluar/crudPersediaanKeluar.php?action=fetchStok', 
+                data: {'kd_bahan=' : bahan, 'jumlah=': stok},
+                success: function(response) { 
+                  if(response == "1"){
+                    Swal.fire("Stok tidak mencukupi!");
+                    $('#jumlah'+count+'').val('');
+                  }
+                    
                 }
             });
         });

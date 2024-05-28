@@ -21,8 +21,8 @@
                             <img class="img-thumbnail img-circle preview_foto" name="preview_foto">
                             <br><br>
                             <h2><span class="nama_lengkap"></span></h2>
-                            <p class="lead mb-5"><span class="no_telp"></span><br>
-                            <span class="email"></span>
+                            <p class="lead mb-5"><span class="no_telp"></span> - <span class="email"></span><br>
+                            <span class="alamat"></span>
                             </p>
                         </div>
                     </div>
@@ -98,6 +98,7 @@ $(document).ready(function() {
             $("#updateSistem .nama_lengkap").text(data.nama_lengkap);
             $("#updateSistem .email").text(data.email);
             $("#updateSistem .no_telp").text(data.no_telp);
+            $("#updateSistem .alamat").text(data.alamat);
             $("#updateSistem input[name='password']").val(data.password);
             $("#updateSistem textarea[name='alamat']").val(data.alamat);
             $("#updateSistem .preview_foto").attr("src", "gambar/user/" + data.foto + "");

@@ -1,8 +1,6 @@
 <?php 
 require_once '../../config/koneksi.php'; 
-require_once '../../asset/dompdf/autoload.inc.php';
 
-use Dompdf\Dompdf;
 
 if ($_GET["action"] === "fetchKode") {
     $qryIdBahanKeluar = $koneksi->query("SELECT MAX(transaksi_keluar) from persediaan_keluar");
@@ -23,9 +21,22 @@ if ($_GET["action"] === "fetchSelect") {
     $sql = "SELECT * FROM bahan where kd_bahan = '$kd_bahan'";
     $result = mysqli_query($koneksi, $sql);
 
-
     $data = mysqli_fetch_assoc($result);
     echo $data['harga'];
+    mysqli_close($koneksi);
+}
+
+// function Untuk harga data
+if ($_GET["action"] === "fetchStok") {
+    $kd_bahan = $_POST["kd_bahan="];
+    $stok = $_POST['jumlah='];
+    $sql = "SELECT * FROM bahan where kd_bahan = '$kd_bahan'";
+    $result = mysqli_query($koneksi, $sql);
+
+    $data = mysqli_fetch_assoc($result);
+    
+    echo $stok > $data['stok'] ? 1 : 0;
+    
     mysqli_close($koneksi);
 }
 
