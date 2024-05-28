@@ -1,6 +1,20 @@
 <?php 
 require_once '../../config/koneksi.php';
 
+// Fungsi kode otomatis
+if ($_GET["action"] === "fetchKode") {
+  $qryIdSupplier = $koneksi->query("SELECT MAX(kd_supplier) from suppliers");
+  $rsltSupplier = $qryIdSupplier->fetch_array();
+  $empty = $rsltSupplier[0];
+  $num = substr($empty,-3, 3);
+  $num++;
+  $char = "S";
+  $kd_supplier = sprintf("%s%03s",$char,$num);
+
+  echo $kd_supplier;
+  mysqli_close($koneksi);
+}
+
 // function Untuk Tabel data
 if ($_GET["action"] === "fetchData") {
     $sql = "SELECT * FROM suppliers";

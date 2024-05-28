@@ -9,7 +9,7 @@ session_start();
     include 'tampilan/template/header.php';
 ?>
 
-    <body class="hold-transition sidebar-mini">
+    <body class="hold-transition sidebar-mini layout-footer-fixed">
         <div class="wrapper">
             <?php 
                 include 'tampilan/template/profil.php';

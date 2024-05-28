@@ -8,7 +8,39 @@
   </div>
 </section>
 
-        
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-primary card-outline card-tabs">
+          <div class="card-header">
+            <h4 class="card-title">Laporan Keluar Masuk Persediaan</h4>
+              <div class="card-tools">
+                  <button type="button" class="btn btn-lg btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+              </div>
+          </div>
+          <div class="card-body">
+            <table id="tableCetak" class="table table-bordered" style="overflow-x:auto;width:100%">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Jumlah</th>
+                    <th>Total Jual</th>
+                    <th>Cetak</th>
+                  </tr>
+                </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="content-header">
   <div class="container-fluid">
@@ -22,10 +54,10 @@
                     <a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">Stok Persediaan</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Persediaan Keluar</a>
+                    <a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Persediaan Masuk</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill" href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">Persediaan Masuk</a>
+                    <a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill" href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">Persediaan Keluar</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="custom-tabs-three-setting-tab" data-toggle="pill" href="#custom-tabs-three-setting" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">Mutasi Persediaan</a>
@@ -58,24 +90,7 @@
                     
                   </div>
                   <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
-                    <center><h3>Laporan Persediaan Keluar</h3></center><br>
-                    <table id="tableKeluar" class="table table-bordered" style="overflow-x:auto;width:100%">
-                      <thead>
-                      <tr>
-                        <th>Tanggal</th>
-                        <th>Kode</th>
-                        <th>Bahan</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Alamat</th>
-                        <th>Jumlah</th>
-                        <th>Harga Jual</th>
-                        <th>Total Jual</th>
-                      </tr>
-                      </thead>
-                    </table>
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel" aria-labelledby="custom-tabs-three-messages-tab">
-                    <center><h3>Laporan Persediaan Masuk</h3></center><br>
+                  <center><h3>Laporan Persediaan Masuk</h3></center><br>
                     <table id="tableMasuk" class="table table-bordered" style="overflow-x:auto;width:100%">
                       <thead>
                       <tr>
@@ -87,6 +102,23 @@
                         <th>Jumlah</th>
                         <th>Harga Beli</th>
                         <th>Total Beli</th>
+                      </tr>
+                      </thead>
+                    </table>
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel" aria-labelledby="custom-tabs-three-messages-tab">
+                  <center><h3>Laporan Persediaan Keluar</h3></center><br>
+                    <table id="tableKeluar" class="table table-bordered" style="overflow-x:auto;width:100%">
+                      <thead>
+                      <tr>
+                        <th>Tanggal</th>
+                        <th>Kode</th>
+                        <th>Bahan</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Alamat</th>
+                        <th>Jumlah</th>
+                        <th>Harga Jual</th>
+                        <th>Total Jual</th>
                       </tr>
                       </thead>
                     </table>
@@ -121,14 +153,28 @@
 
 <script>
   $(document).ready(function () {
-    // Tabel Data Keluar
-    let dataTable = $('#tableKeluar').DataTable({
+    // Tabel Data persediaan
+    let dataTable = $('#tableCetak').DataTable({
         processing: true,
         order: [[ 0, "desc" ]],
         ajax: {
-        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokKeluar',
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataCetak',
         type: 'POST',
       }
+      
+    });
+    
+  });
+
+  $(document).ready(function () {
+    // Tabel Data persediaan
+    let dataTable = $('#tablePersediaan').DataTable({
+        processing: true,
+        ajax: {
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokPersediaan',
+        type: 'POST',
+      }
+      
     });
     
   });
@@ -148,14 +194,14 @@
   });
 
   $(document).ready(function () {
-    // Tabel Data persediaan
-    let dataTable = $('#tablePersediaan').DataTable({
+    // Tabel Data Keluar
+    let dataTable = $('#tableKeluar').DataTable({
         processing: true,
+        order: [[ 0, "desc" ]],
         ajax: {
-        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokPersediaan',
+        url:'tampilan/laporan/crudLaporan.php?action=fetchDataStokKeluar',
         type: 'POST',
       }
-      
     });
     
   });

@@ -29,6 +29,7 @@
                     <th>Nama Bahan</th>
                     <th>Stok</th>
                     <th>Harga</th>
+                    <th>Nilai Persediaan</th>
                     <th>Action</th>
                   </tr>
                   </thead>

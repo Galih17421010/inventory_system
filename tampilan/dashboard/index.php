@@ -45,14 +45,15 @@
       </div>
 
       <?php
-        $querylaporan = mysqli_query($koneksi,"SELECT (SELECT COUNT(kd_persediaan_masuk) as laporan FROM persediaan_masuk)+(SELECT COUNT(kd_persediaan_keluar) as laporan FROM persediaan_keluar) AS laporan");
+        $querylaporan = mysqli_query($koneksi,"SELECT COUNT(persediaan.transaksi) as laporan FROM(SELECT transaksi_masuk as transaksi FROM persediaan_masuk GROUP BY transaksi_masuk
+                                              UNION SELECT transaksi_keluar as transaksi FROM persediaan_keluar GROUP BY transaksi_keluar) as persediaan");
         $laporan = mysqli_fetch_array($querylaporan);
       ?>
       <div class="col-lg-4 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
-            <h3><?= $laporan['laporan']?> Persediaan</h3>
+            <h3><?= $laporan['laporan']?> Data</h3>
             <p>Laporan</p>
           </div>
           <div class="icon">

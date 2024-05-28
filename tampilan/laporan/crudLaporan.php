@@ -1,6 +1,82 @@
 <?php 
 require_once '../../config/koneksi.php';
 
+// function Untuk Tabel data masuk
+if ($_GET["action"] === "fetchDataCetak") {
+    
+    $sql = "SELECT persediaan.tanggal, persediaan.transaksi, persediaan.nama, persediaan.alamat, persediaan.jumlah, persediaan.total, persediaan.status 
+            FROM(
+            SELECT transaksi_masuk as transaksi, tanggal, suppliers.nama_supplier as nama, suppliers.alamat as alamat, SUM(jumlah) as jumlah, SUM(total) as total, CONCAT('IN') as status FROM persediaan_masuk JOIN suppliers ON persediaan_masuk.kd_supplier = suppliers.kd_supplier GROUP BY transaksi_masuk
+            UNION 
+            SELECT transaksi_keluar as transaksi, tanggal, nama_pelanggan as nama, alamat, SUM(jumlah) as jumlah, SUM(total) as total, CONCAT('OUT') as status FROM persediaan_keluar GROUP BY transaksi_keluar
+            ) as persediaan";
+    $totalQuery = mysqli_query($koneksi,$sql);
+    $total_all_rows = mysqli_num_rows($totalQuery);
+    
+    $query = mysqli_query($koneksi,$sql);
+    $count_rows = mysqli_num_rows($query);
+    $data = array();
+    
+    while($row = mysqli_fetch_assoc($query))
+    {
+        if ($row['status'] == 'IN') {
+            $button = '<a type="button" href="tampilan/persediaan-masuk/cetak/print.php?id='.$row["transaksi"].'" target="blank" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Print</a>';
+        }else{
+            $button = '<a type="button" href="tampilan/persediaan-keluar/cetak/print.php?id='.$row["transaksi"].'" target="blank" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Print</a>';
+        }
+
+        $sub_array = array();   
+        $sub_array[] = date('d/m/Y', strtotime($row['tanggal'])); 
+        $sub_array[] = $row['transaksi'];
+        $sub_array[] = $row['nama'];
+        $sub_array[] = $row['alamat'];
+        $sub_array[] = $row['jumlah'];
+        $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
+        $sub_array[] = $button;
+        $data[] = $sub_array;
+    }
+    $output = array(
+        'recordsTotal' =>$count_rows ,
+        'recordsFiltered'=>   $total_all_rows,
+        'data'=>$data,
+    );
+    echo  json_encode($output);
+}
+
+// function Untuk Tabel data masuk
+if ($_GET["action"] === "fetchDataStokMasuk") {
+    
+    $sql = "SELECT tanggal, transaksi_masuk, suppliers.nama_supplier, suppliers.alamat, kd_persediaan_masuk, bahan.nama_bahan as bahan, persediaan_masuk.harga, jumlah, total 
+            FROM persediaan_masuk JOIN bahan ON persediaan_masuk.kd_bahan = bahan.kd_bahan JOIN suppliers ON persediaan_masuk.kd_supplier = suppliers.kd_supplier ORDER BY tanggal";
+    $totalQuery = mysqli_query($koneksi,$sql);
+    $total_all_rows = mysqli_num_rows($totalQuery);
+    
+    $query = mysqli_query($koneksi,$sql);
+    $count_rows = mysqli_num_rows($query);
+    $data = array();
+    
+    while($row = mysqli_fetch_assoc($query))
+    {
+        
+        $sub_array = array();   
+        $sub_array[] = date('d/m/Y', strtotime($row['tanggal'])); 
+        $sub_array[] = $row['kd_persediaan_masuk'];
+        $sub_array[] = $row['bahan'];
+        $sub_array[] = $row['nama_supplier'];
+        $sub_array[] = $row['alamat'];
+        $sub_array[] = $row['jumlah'];
+        $sub_array[] = 'Rp '.number_format($row['harga'],0,',','.');
+        $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
+        $data[] = $sub_array;
+    }
+    $output = array(
+        'recordsTotal' =>$count_rows ,
+        'recordsFiltered'=>   $total_all_rows,
+        'data'=>$data,
+    );
+    echo  json_encode($output);
+}
+
 // function Untuk Tabel data Keluar
 if ($_GET["action"] === "fetchDataStokKeluar") {
     $output= array();
@@ -35,41 +111,8 @@ if ($_GET["action"] === "fetchDataStokKeluar") {
     echo  json_encode($output);
 }
 
-// function Untuk Tabel data masuk
-if ($_GET["action"] === "fetchDataStokMasuk") {
-    $output= array();
-    $sql = "SELECT tanggal, transaksi_masuk, suppliers.nama_supplier, suppliers.alamat, kd_persediaan_masuk, bahan.nama_bahan as bahan, persediaan_masuk.harga, jumlah, total 
-            FROM persediaan_masuk JOIN bahan ON persediaan_masuk.kd_bahan = bahan.kd_bahan JOIN suppliers ON persediaan_masuk.kd_supplier = suppliers.kd_supplier ORDER BY tanggal";
-    $totalQuery = mysqli_query($koneksi,$sql);
-    $total_all_rows = mysqli_num_rows($totalQuery);
-    
-    $query = mysqli_query($koneksi,$sql);
-    $count_rows = mysqli_num_rows($query);
-    $data = array();
-    
-    while($row = mysqli_fetch_assoc($query))
-    {
-        
-        $sub_array = array();   
-        $sub_array[] = date('d/m/Y', strtotime($row['tanggal'])); 
-        $sub_array[] = $row['kd_persediaan_masuk'];
-        $sub_array[] = $row['bahan'];
-        $sub_array[] = $row['nama_supplier'];
-        $sub_array[] = $row['alamat'];
-        $sub_array[] = $row['jumlah'];
-        $sub_array[] = 'Rp '.number_format($row['harga'],0,',','.');
-        $sub_array[] = 'Rp '.number_format($row['total'],0,',','.');
-        $data[] = $sub_array;
-    }
-    $output = array(
-        'recordsTotal' =>$count_rows ,
-        'recordsFiltered'=>   $total_all_rows,
-        'data'=>$data,
-    );
-    echo  json_encode($output);
-}
 
-// function Untuk Tabel data masuk
+// function Untuk Tabel data perseiaan
 if ($_GET["action"] === "fetchDataStokPersediaan") {
     $output= array();
     $sql = "SELECT bahan.kd_bahan, nama_bahan, SUM(persediaan_masuk.jumlah) as masuk, SUM(persediaan_keluar.jumlah) as keluar, stok, bahan.harga, (stok * bahan.harga) as nilai 

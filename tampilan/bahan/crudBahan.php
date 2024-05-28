@@ -34,11 +34,14 @@ if ($_GET["action"] === "fetchData") {
         }else{
           $stok = $row['stok'];
         }
+
+        $nilai = $row['stok'] * $row['harga'];
         $sub_array = array();   
         $sub_array[] = $row['kd_bahan'];
         $sub_array[] = $row['nama_bahan'];
         $sub_array[] = $stok;
         $sub_array[] = 'Rp '.number_format($row['harga'],0,',','.');
+        $sub_array[] = 'Rp '.number_format($nilai,0,',','.');
         $sub_array[] = '<button type="button" data-toggle="modal" data-target="#editModal" value="'.$row["id"].'" class="btn btn-success btn-sm editBtn" data-keyboard="false" data-backdrop="static"><i class="fa fa-edit"></i> Edit</button>  
                         <button type="button" value="'.$row["id"].'" class="btn btn-danger btn-sm deleteBtn"><i class="fa fa-trash"></i> Delete</button>';
         $data[] = $sub_array;
