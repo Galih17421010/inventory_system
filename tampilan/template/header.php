@@ -11,7 +11,7 @@ if (!isset($_SESSION['log'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="gambar/<?= $data['gambar']?>" />
+  <link rel="icon" href="gambar/<?= $data['gambar']?>">
 
   <title><?= $data['nama']?> | <?= $data['singkatan']?></title>
  

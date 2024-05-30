@@ -1,10 +1,15 @@
 <?php 
 include "config/koneksi.php";
 session_start();
+
+//Cek Sudah Login atau Belum
+if (isset($_SESSION['log']) == false) {
+    header('location:login.php');
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
 <?php 
     include 'tampilan/template/header.php';
 ?>

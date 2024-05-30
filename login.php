@@ -7,6 +7,7 @@ session_start();
 if (isset($_SESSION['log'])) {
     header('location:index.php');
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +93,7 @@ if (isset($_SESSION['log'])) {
                             </div>
                             </div>
                             <div class="text-center mt-2 mb-3">
-                            <button type="submit" name="login" class="btn btn-primary btn-block">Sign In</button>
+                            <button type="submit" name="login" id="login" class="btn btn-primary btn-block">Sign In</button>
                             </div>
                         </form>
                         </div>
@@ -114,8 +115,6 @@ if (isset($_SESSION['log'])) {
   </footer>
 
 </div>
-
-
 <?php 
 //cek login user
 if (isset($_POST['login'])) {
@@ -125,9 +124,10 @@ if (isset($_POST['login'])) {
   $cekdatabase = mysqli_query($koneksi, "SELECT * From users WHERE email='$email' and password='$password' LIMIT 1");
   $set = mysqli_fetch_assoc($cekdatabase);
 
-  if($set){
+  if($set == true){
       $_SESSION['log'] = $set;
-      header('location:index.php');
+      echo "<script>window.open('index.php','_self')</script>";
+      // header('location:index.php');
   } 
   else {
       echo'<script type="text/javascript">
@@ -140,7 +140,6 @@ if (isset($_POST['login'])) {
   }
 }
 ?>
-
 <script>
   function show() {
   var x = document.getElementById("showPassword");

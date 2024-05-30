@@ -115,8 +115,12 @@ if ($_GET["action"] === "fetchDataStokKeluar") {
 // function Untuk Tabel data perseiaan
 if ($_GET["action"] === "fetchDataStokPersediaan") {
     $output= array();
-    $sql = "SELECT bahan.kd_bahan, nama_bahan, SUM(persediaan_masuk.jumlah) as masuk, SUM(persediaan_keluar.jumlah) as keluar, stok, bahan.harga, (stok * bahan.harga) as nilai 
-            FROM bahan LEFT JOIN persediaan_masuk ON bahan.kd_bahan = persediaan_masuk.kd_bahan LEFT JOIN persediaan_keluar ON bahan.kd_bahan = persediaan_keluar.kd_bahan 
+    $sql = "SELECT bahan.kd_bahan, nama_bahan, persediaan_masuk.masuk as masuk, persediaan_keluar.keluar as keluar, stok, bahan.harga, (stok * bahan.harga) as nilai 
+            FROM bahan 
+            LEFT JOIN (SELECT persediaan_masuk.kd_bahan, sum(persediaan_masuk.jumlah) as masuk FROM persediaan_masuk GROUP BY persediaan_masuk.kd_bahan)
+                        persediaan_masuk ON bahan.kd_bahan = persediaan_masuk.kd_bahan 
+            LEFT JOIN (SELECT persediaan_keluar.kd_bahan, sum(persediaan_keluar.jumlah) as keluar FROM persediaan_keluar GROUP BY persediaan_keluar.kd_bahan) 
+                        persediaan_keluar ON bahan.kd_bahan = persediaan_keluar.kd_bahan 
             GROUP BY bahan.kd_bahan";
     $totalQuery = mysqli_query($koneksi,$sql);
     $total_all_rows = mysqli_num_rows($totalQuery);
