@@ -40,6 +40,12 @@ if (isset($_SESSION['log']) == false) {
                         elseif($page == "supplier"){
                             include "tampilan/supplier/index.php";
                         }
+                        elseif($page == "bahan-masuk"){
+                            include "tampilan/bahan-masuk/index.php";
+                        }
+                        elseif($page == "bahan-keluar"){
+                            include "tampilan/bahan-keluar/index.php";
+                        }
                         elseif($page == "persediaan-masuk"){
                             include "tampilan/persediaan-masuk/index.php";
                         }

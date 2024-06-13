@@ -1,7 +1,7 @@
 <?php 
 require_once '../../config/koneksi.php';
 
-// function Untuk Tabel data masuk
+// function Untuk Tabel data cetak
 if ($_GET["action"] === "fetchDataCetak") {
     
     $sql = "SELECT persediaan.tanggal, persediaan.transaksi, persediaan.nama, persediaan.alamat, persediaan.jumlah, persediaan.total, persediaan.status 

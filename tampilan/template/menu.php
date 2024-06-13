@@ -42,6 +42,24 @@
             <div class="nav-header">
                 Report
             </div> 
+
+          <li class="nav-item">
+            <a href="?page=bahan-masuk" class="nav-link">
+              <i class="nav-icon fas fa-cart-plus"></i>
+              <p>
+                Bahan Masuk
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="?page=bahan-keluar" class="nav-link">
+              <i class="nav-icon fas fa-cart-arrow-down"></i>
+              <p>
+                Bahan Keluar
+              </p>
+            </a>
+          </li>
+
           <li class="nav-item">
             <a href="?page=persediaan-masuk" class="nav-link">
               <i class="nav-icon fas fa-folder-plus"></i>
